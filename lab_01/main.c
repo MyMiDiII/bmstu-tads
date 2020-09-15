@@ -13,14 +13,16 @@
 
 #include <stdio.h>
 
+#include "big_nums.h"
+
 #define OK 0
 #define ERR_READ -1
 
 int main(void)
 {
     int exit_code;
-    big_int int_num;
-    bit_double double_num;
+    //big_int int_num;
+    big_double double_num;
 
     puts("Поиск произведения длинного вещественного");
     puts("числа на длинное целое число.");
@@ -39,7 +41,7 @@ int main(void)
         return ERR_READ;
     }
 
-    printf("Введите целый множитель: ");
+    /*printf("Введите целый множитель: ");
     exit_code = read_big_int(&int_num);
 
     if (exit_code)
@@ -62,7 +64,7 @@ int main(void)
     {
         puts("Ошибка при выводе результата.");
         return ERR_PRINT;
-    }
+    }*/
 
     return OK;
 }
