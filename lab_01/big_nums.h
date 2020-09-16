@@ -8,6 +8,8 @@
 #define READ_OK 0
 #define ERR_WRONG_CHAR -1
 #define ERR_INPUT -2
+#define ERR_EMPTY_MANTISSA -3
+#define ERR_READ_ORDER -4
 
 typedef struct
 {
@@ -21,8 +23,8 @@ typedef struct
     char sign;
     short int num[MAX_DOUBLE_LEN];
     short int len_num;
-    int order;
     short int point_place;
+    int order;
 } big_double;
 
 int read_big_double(big_double *const number);
