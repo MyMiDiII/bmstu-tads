@@ -10,6 +10,7 @@
 #define ERR_INPUT -2
 #define ERR_EMPTY_MANTISSA -3
 #define ERR_READ_ORDER -4
+#define ERR_WRONG_LEN -5
 
 typedef struct
 {
