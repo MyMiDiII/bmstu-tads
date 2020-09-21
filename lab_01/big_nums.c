@@ -20,6 +20,7 @@ int read_mantissa(big_double *const number)
     _Bool begin = true;
     _Bool point_flag = false;
     short int current_point_place = 0;
+    number->len_num = 0;
 
     while ((ch = getchar()) != 'e' && ch != 'E' && ch != '\n' && ch != EOF)
     {
@@ -59,7 +60,7 @@ int read_mantissa(big_double *const number)
         {
             if (number->len_num >= MAX_DOUBLE_LEN)
                 return ERR_WRONG_LEN;
-            number->num[number->len_num] = char_into_int(ch);
+            number->num[number->len_num] = ch;
             number->len_num++;
         }
     }
@@ -75,27 +76,41 @@ int read_mantissa(big_double *const number)
     return READ_OK;
 }
 
-int read_order(int *const order)
+int read_int_str(char *const read_str, const int max_int_len)
 {
     char ch;
     short int count = 0;
-    char read_order[MAX_ORDER_LEN + 1];
 
-    while ((ch = getchar()) != '\n' && ch != EOF && count < MAX_ORDER_LEN + 1)
+    while ((ch = getchar()) != '\n' && ch != EOF && count < max_int_len + 1)
     {
         if (ch == ' ')
             continue;
 
+        if (ch < '0' || ch > '9')
+            if (count != 0 || (0 == count && ch != '-' && ch != '+'))
+                return ERR_READ_INT_STR;
+
         if (0 == count && ch != '-' && ch != '+')
-            read_order[count++] = '+';
-        read_order[count] = ch;
+            read_str[count++] = '+';
+
+        read_str[count] = ch;
         count++;
     }
 
-    if (count > MAX_ORDER_LEN)
-        return ERR_READ_ORDER;
+    if (count > max_int_len)
+        return ERR_READ_INT_STR;
 
-    read_order[count] = '\0';
+    read_str[count] = '\0';
+
+    return count;
+}
+
+int read_order(int *const order)
+{
+    char read_order[MAX_ORDER_LEN + 1];
+
+    if (read_int_str(read_order, MAX_ORDER_LEN) < 0)
+        return ERR_READ_ORDER;
 
     char *end_ptr;
 
@@ -119,23 +134,36 @@ int read_big_double(big_double *const number)
         exit_code = read_order(&number->order);
 
     // printf("%d\n", exit_code);
-/*
-    if (!exit_code)
-    {
-        for (int i = 0; i < number->len_num; i++)
-        {
-            if (i == number->point_place)
-            {
-                printf(".%d", number->num[i]);
-            }
-            else
-            {
-                printf("%d", number->num[i]);
-            }
-        }
-
-        printf("e%d\n", number->order);
-    }*/
 
     return exit_code; 
+}
+
+int read_big_int(big_int *const number)
+{
+    short int len = read_int_str(number->num, MAX_INT_LEN + 1);
+
+    if (len < 0)
+        return ERR_READ_INT_STR;
+
+    number->len_num = len;
+
+    return READ_OK;
+}
+
+int print_big_double(const big_double *const number)
+{
+    printf("%c", number->sign);
+    for (int i = 0; i < number->len_num; i++)
+    {
+        if (i == number->point_place)
+        {
+            printf(".%c", number->num[i]);
+        }
+        else
+        {
+            printf("%c", number->num[i]);
+        }
+    }
+
+    printf("e%d\n", number->order);
 }

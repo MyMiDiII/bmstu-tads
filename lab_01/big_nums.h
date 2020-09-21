@@ -11,18 +11,18 @@
 #define ERR_EMPTY_MANTISSA -3
 #define ERR_READ_ORDER -4
 #define ERR_WRONG_LEN -5
+#define ERR_READ_INT_STR -6
 
 typedef struct
 {
-    char sign;
-    short int num[MAX_INT_LEN];
+    char num[MAX_INT_LEN + 1];
     short int len_num;
 } big_int;
 
 typedef struct
 {
     char sign;
-    short int num[MAX_DOUBLE_LEN];
+    char num[MAX_DOUBLE_LEN];
     short int len_num;
     short int point_place;
     int order;
