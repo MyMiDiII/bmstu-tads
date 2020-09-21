@@ -1,3 +1,5 @@
+// TODO добавить функции в хедер
+
 #ifndef __BIG_NUMS_H__
 
 #define __BIG_NUMS_H__
@@ -32,6 +34,8 @@ typedef struct
 int read_big_double(big_double *const number);
 
 int read_big_int(big_int *const number);
+
+void normalize_number(big_double *const number);
 
 int multiply_big_numbers(const big_int *const int_num,
                          const big_double *const double_int,

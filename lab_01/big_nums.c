@@ -152,6 +152,32 @@ int read_order(int *const order)
 }
 
 
+void normalize_number(big_double *const number)
+{
+    number->order += number->point_place;
+    number->point_place = 0;
+
+    if (1 == number->len_num && '0' == number->num[0])
+        number->order = 0;
+
+    short int count = 0;
+
+    // printf("%d\n", number->len_num);
+
+    for (count = 0; count < number->len_num && '0' == number->num[count]; count++)
+        printf("%c ", number->num[count]);
+
+    // printf("%d\n", count);
+
+    number->order -= count;
+
+    for (short int i = 0; i < count && i + count < number->len_num; i++)
+        number->num[i] = number->num[i + count];
+
+    number->len_num -= count;
+}
+
+
 int read_big_double(big_double *const number)
 {
     short int exit_code = READ_OK;
@@ -168,11 +194,7 @@ int read_big_double(big_double *const number)
 
     if (!exit_code)
     {
-        number->order += number->point_place;
-        number->point_place = 0;
-
-        if (1 == number->len_num && '0' == number->num[0])
-            number->order = 0;
+        normalize_number(number);
     }
 
     return exit_code; 
