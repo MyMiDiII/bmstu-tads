@@ -7,11 +7,12 @@
 
 #define READ_OK 0
 #define ERR_WRONG_CHAR -1
-#define ERR_INPUT -2
 #define ERR_EMPTY_MANTISSA -3
 #define ERR_READ_ORDER -4
 #define ERR_WRONG_LEN -5
 #define ERR_READ_INT_STR -6
+
+#define INT_INPUT 1
 
 typedef struct
 {
