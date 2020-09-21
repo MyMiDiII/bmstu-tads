@@ -19,13 +19,17 @@ int read_mantissa(big_double *const number)
     char ch;
     _Bool begin = true;
     _Bool point_flag = false;
+    _Bool zeros_delete_flag = true;
     short int current_point_place = 0;
+    short int zeros_count = 0;
     number->len_num = 0;
+    number->order = 0;
 
     while ((ch = getchar()) != 'e' && ch != 'E' && ch != '\n' && ch != EOF)
     {
-        // ? как хранить ноль
-        // ! убирать нули в начале и конце
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        // !! убирать нули в начале и конце !!
+        // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         if (ch == ' ')
             continue;
@@ -71,7 +75,16 @@ int read_mantissa(big_double *const number)
     if (!number->len_num && !point_flag)
         return ERR_EMPTY_MANTISSA;
 
+    if (zeros_delete_flag)
+        number->len_num -= zeros_count;
+
     number->point_place = number->len_num - current_point_place;
+
+    if (0 == number->len_num)
+    {
+        number->num[0] = '0';
+        number->len_num++;
+    }
 
     return READ_OK;
 }
@@ -128,12 +141,14 @@ int read_big_double(big_double *const number)
 
     exit_code = read_mantissa(number);
 
-    // printf("%d\n", exit_code);
-
     if (!exit_code)
         exit_code = read_order(&number->order);
 
-    // printf("%d\n", exit_code);
+    number->order += number->point_place;
+    number->point_place = 0;
+
+    if (1 == number->len_num && '0' == number->num[0])
+        number->order = 0;
 
     return exit_code; 
 }
@@ -152,18 +167,17 @@ int read_big_int(big_int *const number)
 
 int print_big_double(const big_double *const number)
 {
-    printf("%c", number->sign);
-    for (int i = 0; i < number->len_num; i++)
+    printf("%c0.", number->sign);
+    for (int i = number->point_place; i < number->len_num; i++)
     {
-        if (i == number->point_place)
-        {
-            printf(".%c", number->num[i]);
-        }
-        else
-        {
-            printf("%c", number->num[i]);
-        }
+        printf("%c", number->num[i]);
     }
 
-    printf("e%d\n", number->order);
+    printf(" E %+d\n", number->order);
+}
+
+int multyply_big_numbers(const big_int *const int_num,
+    const big_double *const double_num, const big_double *const result_num)
+{
+
 }
