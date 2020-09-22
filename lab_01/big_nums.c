@@ -180,32 +180,14 @@ int read_big_double(big_double *const number)
 
     exit_code = read_mantissa(number);
 
-    for (int i = 0; i < number->len_num; i++)
-        printf("%c", number->num[i]);
-    puts("=1");
-
     if (!exit_code)
         exit_code = read_order(&number->order);
-
-    for (int i = 0; i < number->len_num; i++)
-        printf("%c", number->num[i]);
-    puts("=2");
 
     if (INT_INPUT == exit_code)
         exit_code = READ_OK;
 
-    for (int i = 0; i < number->len_num; i++)
-        printf("%c", number->num[i]);
-    puts("=3");
-
     if (!exit_code)
-    {
         normalize_number(number);
-    }
-
-    for (int i = 0; i < number->len_num; i++)
-        printf("%c", number->num[i]);
-    puts("here3");
 
     return exit_code; 
 }

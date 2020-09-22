@@ -60,8 +60,6 @@ int main(void)
 
     puts("Считанное целое число: ");
 
-    printf("%d\n", int_num.len_num);
-
     for (int i = 0; i < int_num.len_num; i++)
         printf("%c", int_num.num[i]);
     printf("\n");
