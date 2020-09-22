@@ -2,12 +2,12 @@
 // 1. КОММЕНТАРИИ
 // 2. Уточнить обработку ошибок
 // * 3. Вывести информацию о том, что делает программа
-// 4. Чтение больших чисел
+// * 4. Чтение больших чисел
 // 5. Поиск произведения
-// 6. Вывод числа в нормализованном виде
+// * 6. Вывод числа в нормализованном виде
 //
 // ???
-// 1. Как покороче записать вид ввода?
+// * 1. Как покороче записать вид ввода?
 // * 2. Нужно ли приводить в нормализованный вид введенные числа? да
 
 
@@ -22,12 +22,14 @@ int main(void)
 {
     int exit_code;
     big_int int_num;
-    big_double double_num;
+    big_double double_num, result_num;
 
-    puts("Поиск произведения длинного вещественного");
-    puts("числа на длинное целое число.");
+    puts("ПОИСК ПРОИЗВЕДЕНИЯ ДЛИННОГО ВЕЩЕСТВЕННОГО");
+    puts("ЧИСЛА НА ДЛИННОЕ ЦЕЛОЕ ЧИСЛО.");
     puts("");
     puts("Пробелы, лидирующие и конечные нули при вводе игнорируются.");
+    puts("");
+    puts("Пустой ввод корректен и является вводом нуля");
     puts("");
     puts("Формат ввода вещественного числа: ±n.m E ±K, длина(n+m) ≤ 30,");
     puts("длина(k) ≤ 5, знак + необязателен.");
@@ -58,11 +60,13 @@ int main(void)
 
     puts("Считанное целое число: ");
 
+    printf("%d\n", int_num.len_num);
+
     for (int i = 0; i < int_num.len_num; i++)
         printf("%c", int_num.num[i]);
     printf("\n");
 
-    /*exit_code = multiply_big_numbers(&int_num, &double_num, &result_num);
+    exit_code = multiply_big_numbers(&int_num, &double_num, &result_num);
 
     if (exit_code)
     {
@@ -70,7 +74,7 @@ int main(void)
         return ERR_MULTIPLY;
     }
 
-    exit_code = print_big_double(&result_num);
+    /*exit_code = print_big_double(&result_num);
 
     if (exit_code)
     {

@@ -8,11 +8,13 @@
 #define MAX_DOUBLE_LEN 30
 
 #define READ_OK 0
+#define MULTIPLY_OK 0
 #define ERR_WRONG_CHAR -1
 #define ERR_EMPTY_MANTISSA -3
 #define ERR_READ_ORDER -4
 #define ERR_WRONG_LEN -5
 #define ERR_READ_INT_STR -6
+#define ERR_MULTIPLY -7
 
 #define INT_INPUT 1
 
