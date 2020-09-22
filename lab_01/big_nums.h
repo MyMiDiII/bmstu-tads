@@ -43,6 +43,6 @@ int multiply_big_numbers(const big_int *const int_num,
                          const big_double *const double_int,
                          big_double *const result);
 
-int print_big_double(const big_double *const number); 
+void print_big_double(big_double *const number); 
 
 #endif

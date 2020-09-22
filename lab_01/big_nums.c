@@ -205,8 +205,10 @@ int read_big_int(big_int *const number)
 }
 
 
-int print_big_double(const big_double *const number)
+void print_big_double(big_double *const number)
 {
+    normalize_number(number);
+
     printf("%c0.", number->sign);
     for (int i = number->point_place; i < number->len_num; i++)
     {
@@ -217,7 +219,7 @@ int print_big_double(const big_double *const number)
 }
 
 
-int char_into_int(char ch)
+short int char_into_int(char ch)
 {
     if (ch < '0' || ch > '9')
         return EOF;
@@ -229,28 +231,54 @@ int char_into_int(char ch)
 int multiply_big_numbers(const big_int *const int_num,
     const big_double *const double_num, big_double *const result_num)
 {
-    /*_Bool back_int_zeros = true;
-    result_num->order = int_num->len_num - 1 + double_num->order;
+    short int first_len = int_num->len_num - 1;
+    short int second_len = double_num->len_num;
+    short int transfer = 0;
+    short int max_result_len = first_len + second_len;
 
-    for (short int i = double_num->len_num - 1; i > -1; i--)
+    // ! длина будет другая
+    result_num->len_num = max_result_len;
+    result_num->point_place = 0;
+    result_num->order = first_len + double_num->order;
+
+    if (int_num->num[0] == double_num->sign)
+        result_num->sign = '+';
+    else
+        result_num->sign = '-';
+
+    for (short int i = 0; i < max_result_len; i++)
     {
-        for (short int j = int_num->len_num - 1; j > 0; j--)
-        {
-            if (back_int_zeros)
-            {
-                if (int_num->num[j] == '0')
-                {
-                    result_num->order++;
-                    continue;
-                }
-                else
-                    back_int_zeros = false;
-            }
+        short int index = (max_result_len > MAX_DOUBLE_LEN ? 
+                          MAX_DOUBLE_LEN : max_result_len) - i - 1;
+        
+        short int current_sum = 0;
 
-            result_num[MAX_DOUBLE_LEN - ()]
+        for (short int k = 0; k < second_len; k++)
+        {
+            short int second_digit = double_num->num[second_len - k - 1] - '0';
+            printf("second: %d ", second_digit);
+            
+            short int first_digit;
+
+            if (i - k >= 0 && i - k < first_len)
+            {
+                // printf("l: %d\n", k);
+                // printf("INT_INDEX: %d\n", first_len - i + k);
+                first_digit = int_num->num[first_len - i + k] - '0';
+            }
+            else
+                first_digit = 0;
+
+            printf("first: %d\n", first_digit);
+            current_sum += first_digit * second_digit;
         }
+        current_sum += transfer;
+
+        printf("sum: %d\n", current_sum);
+
+        result_num->num[index] = current_sum % 10 + '0';
+        transfer = current_sum / 10;
     }
-    */
 
     return MULTIPLY_OK;
 }

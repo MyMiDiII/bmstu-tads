@@ -72,13 +72,7 @@ int main(void)
         return ERR_MULTIPLY;
     }
 
-    /*exit_code = print_big_double(&result_num);
-
-    if (exit_code)
-    {
-        puts("Ошибка при выводе результата.");
-        return ERR_PRINT;
-    }*/
+    print_big_double(&result_num);
 
     return OK;
 }
