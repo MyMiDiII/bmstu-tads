@@ -55,23 +55,15 @@ int main(void)
         return ERR_READ;
     }
 
-    puts("Считанное вещественное число: ");
-    print_big_double(&double_num);
-
-    puts("Считанное целое число: ");
-
-    for (int i = 0; i < int_num.len_num; i++)
-        printf("%c", int_num.num[i]);
-    printf("\n");
-
     exit_code = multiply_big_numbers(&int_num, &double_num, &result_num);
 
     if (exit_code)
     {
-        puts("Ошибка при умножении чисел.");
+        puts("Переполнение порядка.");
         return ERR_MULTIPLY;
     }
 
+    printf("Результат умножения двух чисел: ");
     print_big_double(&result_num);
 
     return OK;

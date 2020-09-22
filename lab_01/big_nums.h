@@ -15,6 +15,7 @@
 #define ERR_WRONG_LEN -5
 #define ERR_READ_INT_STR -6
 #define ERR_MULTIPLY -7
+#define ERR_TOO_BIG_ORDER -8
 
 #define INT_INPUT 1
 
@@ -43,6 +44,6 @@ int multiply_big_numbers(const big_int *const int_num,
                          const big_double *const double_int,
                          big_double *const result);
 
-void print_big_double(big_double *const number); 
+void print_big_double(const big_double *const number); 
 
 #endif

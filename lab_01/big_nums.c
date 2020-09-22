@@ -171,6 +171,13 @@ void normalize_number(big_double *const number)
     }
 
     number->len_num -= back_zeros;
+
+    if (0 == number->len_num)
+    {
+        number->num[0] = '0';
+        number->len_num++;
+        number->order = 0;
+    }
 }
 
 
@@ -205,10 +212,8 @@ int read_big_int(big_int *const number)
 }
 
 
-void print_big_double(big_double *const number)
+void print_big_double(const big_double *const number)
 {
-    normalize_number(number);
-
     printf("%c0.", number->sign);
     for (int i = number->point_place; i < number->len_num; i++)
     {
@@ -219,12 +224,35 @@ void print_big_double(big_double *const number)
 }
 
 
-short int char_into_int(char ch)
+void round_num(big_double *const number, char last)
 {
-    if (ch < '0' || ch > '9')
-        return EOF;
+    short int transfer = 0;
+    short int i = number->len_num - 1;
 
-    return ch - '0';
+    while (i >= 0 && (last >= '5' || transfer))
+    {
+        last = '\0';
+        if (number->num[i] == '9')
+        {
+            number->num[i] = '0';
+            transfer = 1;
+        }
+        else
+        {
+            number->num[i]++;
+            transfer = 0;
+        }
+
+        i--;
+    }
+
+    if (transfer)
+    {
+        for (short int j = MAX_DOUBLE_LEN - 1; j > 0; j--)
+            number->num[j] = number->num[j - 1];
+
+        number->order++;
+    }
 }
 
 
@@ -233,11 +261,9 @@ int multiply_big_numbers(const big_int *const int_num,
 {
     short int first_len = int_num->len_num - 1;
     short int second_len = double_num->len_num;
-    short int transfer = 0;
     short int max_result_len = first_len + second_len;
 
-    // ! длина будет другая
-    result_num->len_num = max_result_len;
+    result_num->len_num = max_result_len > MAX_DOUBLE_LEN ? MAX_DOUBLE_LEN : max_result_len;
     result_num->point_place = 0;
     result_num->order = first_len + double_num->order;
 
@@ -246,39 +272,55 @@ int multiply_big_numbers(const big_int *const int_num,
     else
         result_num->sign = '-';
 
+    short int transfer = 0;
+    short int shift = 0;
+    char last = '\0';
+
     for (short int i = 0; i < max_result_len; i++)
     {
-        short int index = (max_result_len > MAX_DOUBLE_LEN ? 
-                          MAX_DOUBLE_LEN : max_result_len) - i - 1;
+        short int index;
+        if (i >= MAX_DOUBLE_LEN)
+            index = 0;
+        else
+            index = result_num->len_num - i - 1;
         
         short int current_sum = 0;
 
         for (short int k = 0; k < second_len; k++)
         {
             short int second_digit = double_num->num[second_len - k - 1] - '0';
-            printf("second: %d ", second_digit);
             
             short int first_digit;
 
             if (i - k >= 0 && i - k < first_len)
-            {
-                // printf("l: %d\n", k);
-                // printf("INT_INDEX: %d\n", first_len - i + k);
                 first_digit = int_num->num[first_len - i + k] - '0';
-            }
             else
                 first_digit = 0;
 
-            printf("first: %d\n", first_digit);
             current_sum += first_digit * second_digit;
         }
         current_sum += transfer;
 
-        printf("sum: %d\n", current_sum);
-
-        result_num->num[index] = current_sum % 10 + '0';
         transfer = current_sum / 10;
+
+        if (i >= MAX_DOUBLE_LEN && current_sum)
+        {
+            shift++;
+            last = result_num->num[MAX_DOUBLE_LEN - 1];
+
+            for (short int j = MAX_DOUBLE_LEN - 1; j > 0; j--)
+                result_num->num[j] = result_num->num[j - 1];
+        }
+        
+        result_num->num[index] = current_sum % 10 + '0';
     }
+
+    if (last != '\0')
+        round_num(result_num, last);
+    normalize_number(result_num);
+
+    if (result_num->order > 99999 || result_num->order < -99999)
+        return ERR_TOO_BIG_ORDER;
 
     return MULTIPLY_OK;
 }
