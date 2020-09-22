@@ -34,16 +34,24 @@ typedef struct
     int order;
 } big_double;
 
+int read_mantissa(big_double *const number);
+
+int read_int_str(char *const read_str, const int max_int_len);
+
+int read_order(int *const order);
+
+void normalize_number(big_double *const number);
+
 int read_big_double(big_double *const number);
 
 int read_big_int(big_int *const number);
 
-void normalize_number(big_double *const number);
+void print_big_double(const big_double *const number); 
 
 int multiply_big_numbers(const big_int *const int_num,
                          const big_double *const double_int,
                          big_double *const result);
 
-void print_big_double(const big_double *const number); 
+void round_num(big_double *const number, char last);
 
 #endif
