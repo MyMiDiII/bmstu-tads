@@ -46,6 +46,8 @@ int read_mantissa(big_double *const number)
 
         if (ch == '.')
         {
+            if (point_flag)
+                return ERR_WRONG_CHAR;
             point_flag = true;
             zeros_delete_flag = false;
         }
@@ -96,8 +98,10 @@ int read_int_str(char *const read_str, const int max_int_len)
             continue;
 
         if (ch < '0' || ch > '9')
+        {
             if (count != 0 || (0 == count && ch != '-' && ch != '+'))
                 return ERR_READ_INT_STR;
+        }
 
         if (0 == count && ch != '-' && ch != '+')
             read_str[count++] = '+';
@@ -204,7 +208,7 @@ int read_big_int(big_int *const number)
     short int len = read_int_str(number->num, MAX_INT_LEN + 1);
 
     if (len < 0)
-        return ERR_READ_INT_STR;
+        return len;
 
     number->len_num = len;
 
