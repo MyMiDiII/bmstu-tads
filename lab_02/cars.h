@@ -51,6 +51,6 @@ typedef struct
     size_t len;
 } car_table_t;
 
-int upload_from_file(car_table_t table);
+int upload_from_file(car_table_t *table);
 
 #endif

@@ -1,5 +1,5 @@
-main : main.o menu.o
+main : main.o menu.o cars.o
 
-main.o : main.c menu.h
+main.o : main.c menu.h cars.h
 
-menu.o : menu.c menu.h
+menu.o : menu.c menu.h cars.h

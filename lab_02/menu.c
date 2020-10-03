@@ -62,7 +62,7 @@ int do_action(const short int action, car_table_t *table)
     {
         case 1:
             exit_code = upload_from_file(table);
-            printf("%s", exit_code ? "Ошибка при чтении файла" : "Данные загружены");            
+            printf("%s\n", exit_code ? "Ошибка при чтении файла!" : "Данные успешно загружены!");            
             break;
 
         case 2:
