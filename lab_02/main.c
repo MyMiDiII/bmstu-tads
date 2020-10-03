@@ -10,13 +10,17 @@
 #include <stdbool.h>
 
 #include "menu.h"
+#include "cars.h"
 
 #define OK 0
 
+
 int main(void)
 {
-    int exit_code = OK;
     puts("ПРОГРАММА ОБРАБОТКИ СПИСКА МАШИН");
+
+    int exit_code = OK;
+    car_table_t table;
 
     while (true)
     {
@@ -36,7 +40,7 @@ int main(void)
             break;
         }
 
-        exit_code = do_action(action);
+        exit_code = do_action(action, &table);
 
         if (exit_code)
         {
