@@ -4,10 +4,18 @@
 
 #include <stdio.h>
 
-#define MAX_BRAND_LEN 20
-#define MAX_COUNTRY_LEN 20
-#define MAX_COLOR_LEN 20
-#define MAX_TABLE_LEN 50
+#define MAX_BRAND_LEN 30
+#define MAX_COUNTRY_LEN 30
+#define MAX_COLOR_LEN 30
+#define MAX_PRICE_LEN 10
+#define MAX_CONDITION_LEN 4
+#define MAX_WARRANTY_LEN 3
+#define MAX_YEAR_LEN 4
+#define MAX_MILEAGE_LEN 7
+#define MAX_REPAIRS_NUM_LEN 3
+#define MAX_OWNERS_NUM_LEN 3
+#define MAX_TABLE_LEN 55
+#define MAX_TABLE_STR_LEN 135
 
 typedef enum condition
 {
@@ -52,5 +60,7 @@ typedef struct
 } car_table_t;
 
 int upload_from_file(car_table_t *table);
+
+void print_cars(car_table_t *table);
 
 #endif

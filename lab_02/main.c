@@ -21,6 +21,7 @@ int main(void)
 
     int exit_code = OK;
     car_table_t table;
+    table.len = 0;
 
     while (true)
     {

@@ -66,7 +66,7 @@ int do_action(const short int action, car_table_t *table)
             break;
 
         case 2:
-            puts("Поздравляю! Пункт меню выбран верно!");
+            print_cars(table);
             break;
 
         case 3:
