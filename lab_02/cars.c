@@ -270,7 +270,7 @@ int check_and_assign_owners_num(const char *const read_owners_num, car_table_t *
 int read_csv_file(FILE *const file, car_table_t *table, int *const err_row)
 {
     char str[MAX_TABLE_STR_LEN + 2];
-    table->len = 0;
+    table->len = -1;
     int exit_code = CARS_OK;
 
     while (fgets(str, MAX_TABLE_STR_LEN + 3, file))
@@ -278,7 +278,7 @@ int read_csv_file(FILE *const file, car_table_t *table, int *const err_row)
         table->len++;
         size_t len = table->len;
 
-        if (1 == len)
+        if (0 == len)
             continue;
 
         if (strlen(str) > MAX_TABLE_STR_LEN + 2)
@@ -358,13 +358,12 @@ int read_csv_file(FILE *const file, car_table_t *table, int *const err_row)
             return exit_code;
     }
 
-    table->len--;
-
     return exit_code;
 }
 
 int upload_from_file(car_table_t *table)
 {
+    table->len = 0;
     int exit_code = CARS_OK;
     char *file_name = NULL;
     size_t len = 0;
@@ -412,7 +411,19 @@ void print_cars(car_table_t *table)
 {
     if (table->len)
     {
-        ;
+        for (size_t i = 0; i < table->len; i++)
+        {
+            printf("%s ", table->table[i].brand);
+            printf("%s ", table->table[i].country);
+            printf("%s ", table->table[i].color);
+            printf("%d ", table->table[i].price);
+            printf("%d ", table->table[i].condition);
+            printf("%d ", table->table[i].more_info.new_car.warranty);
+            printf("%d ", table->table[i].more_info.used_car.year);
+            printf("%d ", table->table[i].more_info.used_car.mileage);
+            printf("%d ", table->table[i].more_info.used_car.repairs_num);
+            printf("%d\n", table->table[i].more_info.used_car.owners_num);
+        }
     }
     else
     {

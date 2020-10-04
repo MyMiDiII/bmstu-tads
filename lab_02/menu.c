@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "menu.h"
 #include "cars.h"
@@ -47,7 +48,7 @@ int choose_action(short int *const action)
     if (scanf("%hd", action) != 1)
         return ERR_READ_ACTION;
     
-    else if (*action < 0 || *action > 9)
+    else if (*action < 0 || *action > 10)
         return ERR_WRONG_ACTION;
     
     else
