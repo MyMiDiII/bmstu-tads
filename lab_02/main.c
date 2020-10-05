@@ -14,9 +14,10 @@
 
 #define OK 0
 
-
 int main(void)
 {
+    setbuf(stdout, NULL);
+
     puts("ПРОГРАММА ОБРАБОТКИ СПИСКА МАШИН");
 
     int exit_code = OK;

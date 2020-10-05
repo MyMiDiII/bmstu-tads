@@ -4,37 +4,41 @@
 #include <limits.h>
 
 #include "cars.h"
+#include "read_cars.h"
 #include "errors.h"
+#include "my_string.h"
 
 int check_and_assign_brand(const char *const read_brand, car_table_t *table, int *const err_row)
 {
-    if (strlen(read_brand) > MAX_BRAND_LEN)
+    if (my_strlen(read_brand) > MAX_BRAND_LEN)
     {
         *err_row = table->len;
         return ERR_TOO_LONG_BRAND;
     }
     else
+    {
         strcpy((char *) &table->table[table->len - 1].brand, read_brand);
+    }
     
     return CARS_OK;
 }
 
-int check_and_assign_country(const char *const read_coutry, car_table_t *table, int *const err_row)
+int check_and_assign_country(const char *const read_country, car_table_t *table, int *const err_row)
 {
-    if (strlen(read_coutry) > MAX_COUNTRY_LEN)
+    if (my_strlen(read_country) > MAX_COUNTRY_LEN / 2)
     {
         *err_row = table->len;
         return ERR_TOO_LONG_COUNTRY;
     }
     else
-        strcpy((char *) &table->table[table->len - 1].country, read_coutry);
+        strcpy((char *) &table->table[table->len - 1].country, read_country);
 
     return CARS_OK;
 }
 
 int check_and_assign_color(const char *const read_color, car_table_t *table, int *const err_row)
 {
-    if (strlen(read_color) > MAX_COLOR_LEN)
+    if (my_strlen(read_color) > MAX_COLOR_LEN / 2)
     {
         *err_row = table->len;
         return ERR_TOO_LONG_COLOR;
@@ -47,7 +51,7 @@ int check_and_assign_color(const char *const read_color, car_table_t *table, int
 
 int check_and_assign_price(const char *const read_price, car_table_t *table, int *const err_row)
 {
-    if (strlen(read_price) > MAX_PRICE_LEN)
+    if (my_strlen(read_price) > MAX_PRICE_LEN)
     {
         *err_row = table->len;
         return ERR_TOO_LONG_PRICE;
@@ -76,7 +80,7 @@ int check_and_assign_price(const char *const read_price, car_table_t *table, int
 
 int check_and_assign_condition(const char *const read_condition, car_table_t *table, int *const err_row)
 {
-    if (strlen(read_condition) > MAX_CONDITION_LEN)
+    if (my_strlen(read_condition) > MAX_CONDITION_LEN)
     {
         *err_row = table->len;
         return ERR_TOO_LONG_CONDITION;
@@ -98,7 +102,7 @@ int check_and_assign_condition(const char *const read_condition, car_table_t *ta
 
 int check_and_assign_warranty(const char *const read_warranty, car_table_t *table, int *const err_row)
 {
-    if (strlen(read_warranty) > MAX_WARRANTY_LEN)
+    if (my_strlen(read_warranty) > MAX_WARRANTY_LEN)
     {
         *err_row = table->len;
         return ERR_TOO_LONG_WARRANTY;
@@ -132,7 +136,7 @@ int check_and_assign_warranty(const char *const read_warranty, car_table_t *tabl
 
 int check_and_assign_year(const char *const read_year, car_table_t *table, int *const err_row)
 {
-    if (strlen(read_year) > MAX_YEAR_LEN)
+    if (my_strlen(read_year) > MAX_YEAR_LEN)
     {
         *err_row = table->len;
         return ERR_TOO_LONG_YEAR;
@@ -166,7 +170,7 @@ int check_and_assign_year(const char *const read_year, car_table_t *table, int *
 
 int check_and_assign_mileage(const char *const read_mileage, car_table_t *table, int *const err_row)
 {
-    if (strlen(read_mileage) > MAX_MILEAGE_LEN)
+    if (my_strlen(read_mileage) > MAX_MILEAGE_LEN)
     {
         *err_row = table->len;
         return ERR_TOO_LONG_MILEAGE;
@@ -192,7 +196,7 @@ int check_and_assign_mileage(const char *const read_mileage, car_table_t *table,
             return ERR_WRONG_MILEAGE;
         }
         else
-            table->table[table->len - 1].more_info.used_car.mileage = (unsigned short int) mileage;
+            table->table[table->len - 1].more_info.used_car.mileage = (unsigned int) mileage;
     }
     
     return CARS_OK;
@@ -200,7 +204,7 @@ int check_and_assign_mileage(const char *const read_mileage, car_table_t *table,
 
 int check_and_assign_repairs_num(const char *const read_repairs_num, car_table_t *table, int *const err_row)
 {
-    if (strlen(read_repairs_num) > MAX_REPAIRS_NUM_LEN)
+    if (my_strlen(read_repairs_num) > MAX_REPAIRS_NUM_LEN)
     {
         *err_row = table->len;
         return ERR_TOO_LONG_REPAIRS_NUM;
@@ -227,7 +231,7 @@ int check_and_assign_repairs_num(const char *const read_repairs_num, car_table_t
         }
         else
             table->table[table->len - 1].more_info.used_car.repairs_num =
-                 (unsigned short int) read_repairs_num;
+                 (unsigned short int) repairs_num;
     }
 
     return CARS_OK;
@@ -235,7 +239,7 @@ int check_and_assign_repairs_num(const char *const read_repairs_num, car_table_t
 
 int check_and_assign_owners_num(const char *const read_owners_num, car_table_t *table, int *const err_row)
 {
-    if (strlen(read_owners_num) > MAX_OWNERS_NUM_LEN)
+    if (my_strlen(read_owners_num) > MAX_OWNERS_NUM_LEN)
     {
         *err_row = table->len;
         return ERR_TOO_LONG_OWNERS_NUM;
@@ -281,7 +285,7 @@ int read_csv_file(FILE *const file, car_table_t *table, int *const err_row)
         if (0 == len)
             continue;
 
-        if (strlen(str) > MAX_TABLE_STR_LEN + 2)
+        if (my_strlen(str) > MAX_TABLE_STR_LEN + 2)
         {
             *err_row = len;
             return ERR_TOO_LONG_STR;
@@ -407,27 +411,55 @@ int upload_from_file(car_table_t *table)
         return ERR_READ_FILE_NAME;
 }
 
-void print_cars(car_table_t *table)
+int read_record(car_table_t *table)
 {
-    if (table->len)
+    if (table->len >= MAX_TABLE_LEN)
     {
-        for (size_t i = 0; i < table->len; i++)
-        {
-            printf("%s ", table->table[i].brand);
-            printf("%s ", table->table[i].country);
-            printf("%s ", table->table[i].color);
-            printf("%d ", table->table[i].price);
-            printf("%d ", table->table[i].condition);
-            printf("%d ", table->table[i].more_info.new_car.warranty);
-            printf("%d ", table->table[i].more_info.used_car.year);
-            printf("%d ", table->table[i].more_info.used_car.mileage);
-            printf("%d ", table->table[i].more_info.used_car.repairs_num);
-            printf("%d\n", table->table[i].more_info.used_car.owners_num);
-        }
+        puts("Достигнут максимальный размер таблицы.");
+        puts("Удалите данные для возможности добавления записи!");
     }
     else
     {
-        puts("");
-        puts("В таблице нет данных!");
+        int exit_code = CARS_OK;
+        printf("Марка: ");
+
+        char *str = NULL;
+        size_t len = 0;
+        int err_row;
+        char ch;
+
+        scanf("%c", &ch);
+
+        if (getline(&str, &len, stdin) != -1)
+        {
+            printf("%s", str);
+            free(str);
+            /*exit_code = check_and_assign_brand(str, table, &err_row);*/
+        }
+
+        if (exit_code)
+            return exit_code;
+
+        printf("Cтрана-произоводитель: ");
+
+        printf("Цвет: ");
+
+        printf("Цена: ");
+
+        puts("Состояние: ");
+        puts("N - новая");
+        puts("U - б/у");
+
+        printf("Гарантия: ");
+
+        printf("Год выпуска: ");
+
+        printf("Пробег: ");
+
+        printf("Количество ремонтов: ");
+
+        printf("Количество собственников: ");
     }
+
+    return CARS_OK;
 }
