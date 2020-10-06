@@ -99,6 +99,7 @@ int do_action(const short int action, car_table_t *table)
         case 6:
             sorted_table = *table;
             heapsort(&sorted_table.table, sorted_table.len, sizeof(car_t), &compare_records); 
+            // insertionsort(&sorted_table.table, sorted_table.len, sizeof(car_t), &compare_records); 
             print_cars(&sorted_table);
             break;
 
@@ -108,11 +109,13 @@ int do_action(const short int action, car_table_t *table)
             break;
 
         case 8:
-            puts("Поздравляю! Пункт меню выбран верно!");
+            create_keys_table(table, &keys);
+            compare_heapsorts(table, &keys);
             break;
 
         case 9:
-            puts("Поздравляю! Пункт меню выбран верно!");
+            create_keys_table(table, &keys);
+            compare_sorts_types(table, &keys);
             break;
 
         case 10:

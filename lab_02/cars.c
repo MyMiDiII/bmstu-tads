@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #include "read_cars.h"
 #include "print_cars.h"
@@ -174,7 +175,22 @@ void heapsort(void *first, size_t number, size_t size, int (*comparator) (const 
     }
 }
 
+void insertionsort(void *first, size_t number, size_t size, int (*comparator) (const void *, const void *))
+{
+    for (size_t i = 1; i < number; i++)     
+        for (int j = i; j > 0 && 
+             (*comparator)(first + (j - 1) * size, first + j * size) > 0;j--)
+                swap(first + (j - 1) * size, first + j * size, size);
+}
+
 void create_sort_keys_table(car_table_t *table, car_key_table_t *keys)
+{
+    create_keys_table(table, keys);
+
+    heapsort(&keys->table, keys->len, sizeof(car_key_t), &compare_keys_records);
+}
+
+void create_keys_table(car_table_t *table, car_key_table_t *keys)
 {
     keys->len = table->len;
 
@@ -183,6 +199,84 @@ void create_sort_keys_table(car_table_t *table, car_key_table_t *keys)
         keys->table[i].num = i;
         keys->table[i].price = table->table[i].price;
     }
+}
+
+void compare_heapsorts(car_table_t *table, car_key_table_t *keys)
+{
+    car_table_t sorted_table = *table;
+    clock_t start, finish;
+
+    start = clock();
+
+    heapsort(&sorted_table.table, sorted_table.len, sizeof(car_t), &compare_records); 
+
+    finish = clock();
+
+    clock_t time = finish - start;
+
+    printf("Время сортировки по исходной таблице: %ldmsec\n", time);
+
+    start = clock();
 
     heapsort(&keys->table, keys->len, sizeof(car_key_t), &compare_keys_records);
+
+    finish = clock();
+
+    time = finish - start;
+
+    printf("Время сортировки по таблице ключей: %ldmsec\n\n", time);
+}
+
+void compare_sorts_types(car_table_t *table, car_key_table_t *keys)
+{
+    car_table_t sorted_table = *table;
+    car_key_table_t sorted_keys = *keys;
+    clock_t start, finish;
+
+    puts("ПИРАМИДАЛЬНАЯ СОРТИРОВКА");
+
+    start = clock();
+
+    heapsort(&sorted_table.table, sorted_table.len, sizeof(car_t), &compare_records); 
+
+    finish = clock();
+
+    clock_t time = finish - start;
+
+    printf("Время сортировки по исходной таблице: %ldmsec\n", time);
+
+    start = clock();
+
+    heapsort(&sorted_keys.table, sorted_keys.len, sizeof(car_key_t), &compare_keys_records);
+
+    finish = clock();
+
+    time = finish - start;
+
+    printf("Время сортировки по таблице ключей: %ldmsec\n\n", time);
+
+    sorted_table = *table;
+    sorted_keys = *keys;
+
+    puts("СОРТИРОВКА ВСТАВКАМИ");
+
+    start = clock();
+
+    insertionsort(&sorted_table.table, sorted_table.len, sizeof(car_t), &compare_records); 
+
+    finish = clock();
+
+    time = finish - start;
+
+    printf("Время сортировки по исходной таблице: %ldmsec\n", time);
+
+    start = clock();
+
+    insertionsort(&sorted_keys.table, sorted_keys.len, sizeof(car_key_t), &compare_keys_records);
+
+    finish = clock();
+
+    time = finish - start;
+
+    printf("Время сортировки по таблице ключей: %ldmsec\n\n", time);
 }

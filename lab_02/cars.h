@@ -90,6 +90,12 @@ void heapsort(void *first, size_t number, size_t size, int (*comparator) (const 
 
 void create_sort_keys_table(car_table_t *table, car_key_table_t *keys);
 
+void create_keys_table(car_table_t *table, car_key_table_t *keys);
+
 void print_cars_by_keys(car_table_t *table, car_key_table_t *keys);
+
+void insertionsort(void *first, size_t number, size_t size, int (*comparator) (const void *, const void *));
+
+void compare_heapsorts(car_table_t *table, car_key_table_t *keys);
 
 #endif
