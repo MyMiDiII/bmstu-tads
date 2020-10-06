@@ -471,6 +471,39 @@ int read_price(car_table_t *table)
     return exit_code;
 }
 
+int read_delete_price(unsigned int *const price)
+{
+    char str[MAX_PRICE_LEN + 2];
+
+    if (read_str(str, MAX_PRICE_LEN + 3, stdin))
+        return ERR_READ;
+
+    int err_row;
+
+    if (!my_strlen(str))
+        return ERR_READ;
+    
+    if (my_strlen(str) > MAX_PRICE_LEN)
+        return ERR_TOO_LONG_PRICE;
+
+    else
+    {
+        char *end_prt;
+        long int l_price = strtol(str, &end_prt, 10);
+
+        if (*end_prt != '\0')
+            return ERR_READ_PRICE;
+
+        else if (l_price < 0 || l_price > UINT_MAX)
+            return ERR_WRONG_PRICE;
+
+        else
+            *price = (unsigned int) l_price;
+    }
+
+    return CARS_OK;
+}
+
 int read_condition(car_table_t *table)
 {
     int exit_code = CARS_OK;

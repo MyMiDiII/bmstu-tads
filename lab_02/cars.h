@@ -59,4 +59,6 @@ typedef struct
     size_t len;
 } car_table_t;
 
+int delete_record(car_table_t *table);
+
 #endif

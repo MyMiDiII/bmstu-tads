@@ -12,4 +12,6 @@ size_t my_strlen(const char *const str);
 
 int read_str(char *const str, const int max_len, FILE *stream);
 
+void clear_stdin(void);
+
 #endif

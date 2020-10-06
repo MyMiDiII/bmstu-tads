@@ -7,6 +7,8 @@
 #define ERR_READ -1
 #define ERR_WRONG_SYMBOL -2
 
+// ! Добавить функции read
+
 int check_and_assign_brand(const char *const read_brand, car_table_t *table, int *const err_row);
 
 int check_and_assign_country(const char *const read_country, car_table_t *table, int *const err_row);
@@ -32,5 +34,7 @@ int read_csv_file(FILE *const file, car_table_t *table, int *const err_row);
 int upload_from_file(car_table_t *table);
 
 int read_record(car_table_t *table);
+
+int read_delete_price(unsigned int *const price);
 
 #endif
