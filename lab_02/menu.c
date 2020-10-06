@@ -3,6 +3,7 @@
 
 #include "menu.h"
 #include "cars.h"
+#include "my_string.h"
 #include "read_cars.h"
 #include "print_cars.h"
 
@@ -45,16 +46,20 @@ int choose_action(short int *const action)
 {
     puts("Выберете пункт меню: ");
 
-    // ! поменять считывание, чтобы был возможен повторный ввод
+    char str[MAX_MENU_ITEM_LEN + 2];
 
-    if (scanf("%hd", action) != 1)
+    if (read_str(str, MAX_MENU_ITEM_LEN + 3, stdin))
         return ERR_READ_ACTION;
+
+    char *end_prt;
+    long int long_str = strtol(str, &end_prt, 10);
     
-    else if (*action < 0 || *action > 10)
+    if (long_str < 0 || long_str > 10)
         return ERR_WRONG_ACTION;
-    
-    else
-        return OK_ACTION;
+
+    *action = (short int) long_str;
+
+    return READ_OK;
 }
 
 int do_action(const short int action, car_table_t *table)

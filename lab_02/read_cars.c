@@ -16,9 +16,7 @@ int check_and_assign_brand(const char *const read_brand, car_table_t *table, int
         return ERR_TOO_LONG_BRAND;
     }
     else
-    {
         strcpy((char *) &table->table[table->len - 1].brand, read_brand);
-    }
     
     return CARS_OK;
 }
@@ -371,20 +369,14 @@ int upload_from_file(car_table_t *table)
     int exit_code = CARS_OK;
     char *file_name = NULL;
     size_t len = 0;
-    char ch;
     int read;
 
-    // ! после нормального считывания пункта меню убрать
-    scanf("%c", &ch);
     puts("Введите имя файла (с путем при нахождении файла в другой директории):");
 
     if ((read = getline(&file_name, &len, stdin)) != -1)
     {
         if ('\n' == file_name[read - 1])
             file_name[read - 1] = '\0';
-
-        // for (int i = 0; i < read - 1; i++)
-        //    printf("%c", file_name[i]);
 
         FILE *file = fopen(file_name, "r");
         free(file_name);
@@ -398,17 +390,204 @@ int upload_from_file(car_table_t *table)
                 return ERR_CLOSE_FILE;
 
             if (exit_code)
-            {
-                printf("%d\n", err_row);
-                printf("%d\n", exit_code);
                 return exit_code;
-            }
         }
         else
             return ERR_OPEN_FILE;
     }
     else
         return ERR_READ_FILE_NAME;
+}
+
+int read_brand(car_table_t *table)
+{
+    int exit_code = CARS_OK;
+    char str[MAX_BRAND_LEN + 2];
+
+    if (read_str(str, MAX_BRAND_LEN + 3, stdin))
+        return ERR_READ;
+
+    int err_row;
+
+    if (!my_strlen(str))
+        return ERR_READ;
+
+    exit_code = check_and_assign_brand(str, table, &err_row);
+
+    return exit_code;
+}
+
+int read_country(car_table_t *table)
+{
+    int exit_code = CARS_OK;
+    char str[MAX_COUNTRY_LEN + 2];
+
+    if (read_str(str, MAX_COUNTRY_LEN + 3, stdin))
+        return ERR_READ;
+
+    int err_row;
+
+    if (!my_strlen(str))
+        return ERR_READ;
+
+    exit_code = check_and_assign_country(str, table, &err_row);
+
+    return exit_code;
+}
+
+int read_color(car_table_t *table)
+{
+    int exit_code = CARS_OK;
+    char str[MAX_COLOR_LEN + 2];
+
+    if (read_str(str, MAX_COLOR_LEN + 3, stdin))
+        return ERR_READ;
+
+    int err_row;
+
+    if (!my_strlen(str))
+        return ERR_READ;
+
+    exit_code = check_and_assign_color(str, table, &err_row);
+
+    return exit_code;
+}
+
+int read_price(car_table_t *table)
+{
+    int exit_code = CARS_OK;
+    char str[MAX_PRICE_LEN + 2];
+
+    if (read_str(str, MAX_PRICE_LEN + 3, stdin))
+        return ERR_READ;
+
+    int err_row;
+
+    if (!my_strlen(str))
+        return ERR_READ;
+
+    exit_code = check_and_assign_price(str, table, &err_row);
+
+    return exit_code;
+}
+
+int read_condition(car_table_t *table)
+{
+    int exit_code = CARS_OK;
+    char str[3];
+
+    if (read_str(str, 4, stdin))
+        return ERR_READ;
+
+    if (my_strlen(str) != 1)
+        return ERR_READ;
+
+    char ch = str[0];
+    int err_row;
+
+    if (ch == 'N' || ch == 'n')
+        exit_code = check_and_assign_condition("new", table, &err_row);
+
+    else if (ch == 'U' || ch == 'u')
+        exit_code = check_and_assign_condition("used", table, &err_row);
+
+    else
+        exit_code = ERR_WRONG_SYMBOL;
+
+    return exit_code;
+}
+
+int read_warranty(car_table_t *table)
+{
+    int exit_code = CARS_OK;
+    char str[MAX_WARRANTY_LEN + 2];
+
+    if (read_str(str, MAX_WARRANTY_LEN + 3, stdin))
+        return ERR_READ;
+
+    int err_row;
+
+    if (!my_strlen(str))
+        return ERR_READ;
+
+    exit_code = check_and_assign_warranty(str, table, &err_row);
+
+    return exit_code;
+}
+
+int read_year(car_table_t *table)
+{
+    int exit_code = CARS_OK;
+    char str[MAX_YEAR_LEN + 2];
+
+    if (read_str(str, MAX_YEAR_LEN + 3, stdin))
+        return ERR_READ;
+
+    int err_row;
+
+    if (!my_strlen(str))
+        return ERR_READ;
+
+    exit_code = check_and_assign_year(str, table, &err_row);
+
+    if (exit_code)
+        clear_stdin();
+
+    return exit_code;
+}
+
+int read_mileage(car_table_t *table)
+{
+    int exit_code = CARS_OK;
+    char str[MAX_MILEAGE_LEN + 2];
+
+    if (read_str(str, MAX_MILEAGE_LEN + 3, stdin))
+        return ERR_READ;
+
+    int err_row;
+
+    if (!my_strlen(str))
+        return ERR_READ;
+
+    exit_code = check_and_assign_mileage(str, table, &err_row);
+
+    return exit_code;
+}
+
+int read_repairs_num(car_table_t *table)
+{
+    int exit_code = CARS_OK;
+    char str[MAX_REPAIRS_NUM_LEN + 2];
+
+    if (read_str(str, MAX_REPAIRS_NUM_LEN + 3, stdin))
+        return ERR_READ;
+
+    int err_row;
+
+    if (!my_strlen(str))
+        return ERR_READ;
+
+    exit_code = check_and_assign_repairs_num(str, table, &err_row);
+
+    return exit_code;
+}
+
+int read_owners_num(car_table_t *table)
+{
+    int exit_code = CARS_OK;
+    char str[MAX_OWNERS_NUM_LEN + 2];
+
+    if (read_str(str, MAX_OWNERS_NUM_LEN + 3, stdin))
+        return ERR_READ;
+
+    int err_row;
+
+    if (!my_strlen(str))
+        return ERR_READ;
+
+    exit_code = check_and_assign_owners_num(str, table, &err_row);
+
+    return exit_code;
 }
 
 int read_record(car_table_t *table)
@@ -420,46 +599,118 @@ int read_record(car_table_t *table)
     }
     else
     {
+        puts("\nВведите данные о новом автомобиле.\n");
         int exit_code = CARS_OK;
+        table->len++;
+
         printf("Марка: ");
 
-        char *str = NULL;
-        size_t len = 0;
-        int err_row;
-        char ch;
-
-        scanf("%c", &ch);
-
-        if (getline(&str, &len, stdin) != -1)
-        {
-            printf("%s", str);
-            free(str);
-            /*exit_code = check_and_assign_brand(str, table, &err_row);*/
-        }
+        exit_code = read_brand(table);
 
         if (exit_code)
+        {
+            table->len--;
             return exit_code;
+        }
 
         printf("Cтрана-произоводитель: ");
 
+        exit_code = read_country(table);
+
+        if (exit_code)
+        {
+            table->len--;
+            return exit_code;
+        }
+
         printf("Цвет: ");
+
+        exit_code = read_color(table);
+
+        if (exit_code)
+        {
+            table->len--;
+            return exit_code;
+        }
 
         printf("Цена: ");
 
-        puts("Состояние: ");
-        puts("N - новая");
-        puts("U - б/у");
+        exit_code = read_price(table);
 
-        printf("Гарантия: ");
+        if (exit_code)
+        {
+            table->len--;
+            return exit_code;
+        }
 
-        printf("Год выпуска: ");
+        printf("Состояние (N - новый, U - б/у): ");
 
-        printf("Пробег: ");
+        exit_code = read_condition(table);
 
-        printf("Количество ремонтов: ");
+        if (exit_code)
+        {
+            table->len--;
+            return exit_code;
+        }
 
-        printf("Количество собственников: ");
+        if (NEW == table->table[table->len - 1].condition)
+        {
+            printf("Гарантия: ");
+
+            exit_code = read_warranty(table);
+
+            if (exit_code)
+            {
+                table->len--;
+                return exit_code;
+            }
+        }
+        else
+        {
+            printf("Год выпуска: ");
+
+            exit_code = read_year(table);
+
+            if (exit_code)
+            {
+                table->len--;
+                return exit_code;
+            }
+
+            printf("Пробег: ");
+
+            exit_code = read_mileage(table);
+
+            if (exit_code)
+            {
+                table->len--;
+                return exit_code;
+            }
+            
+            printf("Количество ремонтов: ");
+
+            exit_code = read_repairs_num(table);
+
+            if (exit_code)
+            {
+                table->len--;
+                return exit_code;
+            }
+
+            printf("Количество собственников: ");
+
+            exit_code = read_owners_num(table);
+
+            if (exit_code)
+            {
+                table->len--;
+                return exit_code;
+            }
+
+        }
     }
+
+    puts("Данные об автомобиле успешно добавлены");
 
     return CARS_OK;
 }
