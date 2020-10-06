@@ -65,6 +65,8 @@ int choose_action(short int *const action)
 int do_action(const short int action, car_table_t *table)
 {
     int exit_code = OK_ACTION;
+    car_key_table_t keys;
+    car_table_t sorted_table;
 
     switch (action)
     {
@@ -79,6 +81,7 @@ int do_action(const short int action, car_table_t *table)
 
         case 3:
             read_record(table);
+            printf("table_len == %ld\n", table->len);
             break;
 
         case 4:
@@ -89,15 +92,19 @@ int do_action(const short int action, car_table_t *table)
             break;
 
         case 5:
-            puts("Поздравляю! Пункт меню выбран верно!");
+            create_sort_keys_table(table, &keys);
+            print_cars_keys(&keys);
             break;
 
         case 6:
-            puts("Поздравляю! Пункт меню выбран верно!");
+            sorted_table = *table;
+            heapsort(&sorted_table.table, sorted_table.len, sizeof(car_t), &compare_records); 
+            print_cars(&sorted_table);
             break;
 
         case 7:
-            puts("Поздравляю! Пункт меню выбран верно!");
+            create_sort_keys_table(table, &keys);
+            print_cars_by_keys(table, &keys);
             break;
 
         case 8:
@@ -109,7 +116,7 @@ int do_action(const short int action, car_table_t *table)
             break;
 
         case 10:
-            puts("Поздравляю! Пункт меню выбран верно!");
+            find_records(table);
             break;
 
         default:

@@ -59,6 +59,37 @@ typedef struct
     size_t len;
 } car_table_t;
 
+typedef struct
+{
+    size_t num;
+    unsigned int price;
+} car_key_t;
+
+typedef struct
+{
+    car_key_t table[MAX_TABLE_LEN];
+    size_t len;
+} car_key_table_t;
+
 int delete_record(car_table_t *table);
+
+int find_records(car_table_t *table);
+
+void swap(void *first, void *second, size_t size);
+
+int compare_records(const void *first, const void *second);
+
+int compare_keys_records(const void *first, const void *second);
+
+void heapify(void *first, size_t number, size_t bottom, size_t size,
+             int (* comparator) (const void *, const void *));
+
+void build_heap(void *first, size_t number, size_t size, int (*comparator) (const void *, const void *));
+
+void heapsort(void *first, size_t number, size_t size, int (*comparator) (const void *, const void *));
+
+void create_sort_keys_table(car_table_t *table, car_key_table_t *keys);
+
+void print_cars_by_keys(car_table_t *table, car_key_table_t *keys);
 
 #endif

@@ -417,6 +417,28 @@ int read_brand(car_table_t *table)
     return exit_code;
 }
 
+int read_find_brand(char *const brand)
+{
+    int exit_code = CARS_OK;
+    char str[MAX_BRAND_LEN + 2];
+
+    if (read_str(str, MAX_BRAND_LEN + 3, stdin))
+        return ERR_READ;
+
+    int err_row;
+
+    if (!my_strlen(str))
+        return ERR_READ;
+
+    if (my_strlen(str) > MAX_BRAND_LEN)
+        return ERR_TOO_LONG_BRAND;
+
+    else
+        strcpy(brand, str);
+    
+    return CARS_OK;
+}
+
 int read_country(car_table_t *table)
 {
     int exit_code = CARS_OK;
@@ -741,9 +763,8 @@ int read_record(car_table_t *table)
             }
 
         }
+        puts("Данные об автомобиле успешно добавлены");
     }
-
-    puts("Данные об автомобиле успешно добавлены");
 
     return CARS_OK;
 }

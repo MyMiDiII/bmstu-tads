@@ -37,4 +37,6 @@ int read_record(car_table_t *table);
 
 int read_delete_price(unsigned int *const price);
 
+int read_find_brand(char *const brand);
+
 #endif

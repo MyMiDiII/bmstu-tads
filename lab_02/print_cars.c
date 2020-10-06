@@ -264,3 +264,103 @@ void print_cars(car_table_t *table)
         puts("В таблице нет данных!");
     }
 }
+
+void print_key_header(void)
+{
+    printf("┌");
+
+    print_column_line(14);
+    printf("┬");
+
+    print_column_line(MAX_PRICE_LEN);
+    printf("┐");
+
+    puts("");
+
+    printf("│");
+    print_str(" № в исходной", 14);
+
+    printf("│");
+    print_str("   Цена,", MAX_PRICE_LEN);
+
+    printf("│");
+    puts("");
+
+    printf("│");
+    print_str("    таблице", 14);
+
+    printf("│");
+    print_str("  тыс руб", MAX_PRICE_LEN);
+    
+    printf("│");
+    puts("");
+
+    printf("├");
+
+    print_column_line(14);
+    printf("┼");
+
+    print_column_line(MAX_PRICE_LEN);
+    printf("┤");
+
+    puts("");
+}
+
+void print_key_record(const car_key_t *const record)
+{
+    printf("│%*ld", 14, record->num);
+
+    printf("│%*d", MAX_PRICE_LEN, record->price);
+
+    printf("│");
+    puts("");
+}
+
+void print_key_down_line(void)
+{
+    printf("└");
+
+    print_column_line(14);
+    printf("┴");
+
+    print_column_line(MAX_PRICE_LEN);
+    printf("┘");
+
+    puts("");
+}
+
+void print_cars_keys(car_key_table_t *table)
+{
+    if (table->len)
+    {
+        print_key_header();
+
+        for (size_t i = 0; i < table->len; i++)
+            print_key_record(&table->table[i]);
+
+        print_key_down_line();
+    }
+    else
+    {
+        puts("");
+        puts("В таблице нет данных!");
+    }
+}
+
+void print_cars_by_keys(car_table_t *table, car_key_table_t *keys)
+{
+    if (table->len)
+    {
+        print_header();
+
+        for (size_t i = 0; i < table->len; i++)
+            print_record(&table->table[keys->table[i].num]);
+
+        print_down_line();
+    }
+    else
+    {
+        puts("");
+        puts("В таблице нет данных!");
+    }
+}

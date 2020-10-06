@@ -36,5 +36,7 @@
 #define ERR_READ_OWNERS_NUM 31
 #define ERR_WRONG_OWNERS_NUM 32
 #define ERR_NO_CARS 33
+#define ERR_INCORRECT_PRICES 34
+#define ERR_NO_RECORDS 35
 
 #endif

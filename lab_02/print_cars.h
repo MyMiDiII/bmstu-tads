@@ -16,4 +16,12 @@ void print_record(const car_t *const record);
 
 void print_cars(car_table_t *table);
 
+void print_cars_keys(car_key_table_t *table);
+
+void print_key_down_line(void);
+
+void print_key_header(void);
+
+void print_key_record(const car_key_t *const record);
+
 #endif
