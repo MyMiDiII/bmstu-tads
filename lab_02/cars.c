@@ -203,8 +203,11 @@ void create_keys_table(car_table_t *table, car_key_table_t *keys)
 
 void compare_heapsorts(car_table_t *table, car_key_table_t *keys)
 {
+    puts("\nСРАВНЕНИЕ ЭФФЕКТИВНОСТИ МЕТОДОВ\n");
     car_table_t sorted_table = *table;
     clock_t start, finish;
+
+    puts("ПО ВРЕМЕНИ");
 
     start = clock();
 
@@ -214,7 +217,7 @@ void compare_heapsorts(car_table_t *table, car_key_table_t *keys)
 
     clock_t time = finish - start;
 
-    printf("Время сортировки по исходной таблице: %ldmsec\n", time);
+    printf("Время сортировки по исходной таблице: %ld msec\n", time);
 
     start = clock();
 
@@ -224,7 +227,25 @@ void compare_heapsorts(car_table_t *table, car_key_table_t *keys)
 
     time = finish - start;
 
-    printf("Время сортировки по таблице ключей: %ldmsec\n\n", time);
+    printf("Время сортировки по таблице ключей: %ld msec\n", time);
+
+    start = clock();
+
+    create_keys_table(table, keys);
+    
+    finish = clock();
+
+    time = finish - start;
+
+    printf("Время выборки ключей из основной таблицы: %ld msec\n", time);
+
+    puts("\nПО ПАМЯТИ");
+
+    printf("Память, используемая при сортировке исходной таблицы: %ld байт\n",
+           sizeof(car_t) * table->len);
+
+    printf("Память, используемая при сортировке исходной таблицы: %ld байт\n\n",
+           sizeof(car_t) * table->len + sizeof(car_key_t) * table->len);
 }
 
 void compare_sorts_types(car_table_t *table, car_key_table_t *keys)
@@ -233,7 +254,7 @@ void compare_sorts_types(car_table_t *table, car_key_table_t *keys)
     car_key_table_t sorted_keys = *keys;
     clock_t start, finish;
 
-    puts("ПИРАМИДАЛЬНАЯ СОРТИРОВКА");
+    puts("\nПИРАМИДАЛЬНАЯ СОРТИРОВКА");
 
     start = clock();
 
@@ -243,9 +264,10 @@ void compare_sorts_types(car_table_t *table, car_key_table_t *keys)
 
     clock_t time = finish - start;
 
-    printf("Время сортировки по исходной таблице: %ldmsec\n", time);
+    printf("Время сортировки по исходной таблице: %ld msec\n", time);
 
     start = clock();
+
 
     heapsort(&sorted_keys.table, sorted_keys.len, sizeof(car_key_t), &compare_keys_records);
 
@@ -253,7 +275,7 @@ void compare_sorts_types(car_table_t *table, car_key_table_t *keys)
 
     time = finish - start;
 
-    printf("Время сортировки по таблице ключей: %ldmsec\n\n", time);
+    printf("Время сортировки по таблице ключей: %ld msec\n\n", time);
 
     sorted_table = *table;
     sorted_keys = *keys;
@@ -268,7 +290,7 @@ void compare_sorts_types(car_table_t *table, car_key_table_t *keys)
 
     time = finish - start;
 
-    printf("Время сортировки по исходной таблице: %ldmsec\n", time);
+    printf("Время сортировки по исходной таблице: %ld msec\n", time);
 
     start = clock();
 
@@ -278,5 +300,5 @@ void compare_sorts_types(car_table_t *table, car_key_table_t *keys)
 
     time = finish - start;
 
-    printf("Время сортировки по таблице ключей: %ldmsec\n\n", time);
+    printf("Время сортировки по таблице ключей: %ld msec\n\n", time);
 }

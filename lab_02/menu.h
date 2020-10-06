@@ -5,12 +5,10 @@
 #include "cars.h"
 
 #define OK_ACTION 0
-#define ERR_WRONG_ACTION -1
-#define ERR_READ_ACTION -2
 
 #define MAX_MENU_ITEM_LEN 2
 
-void print_menu_error(const int code);
+void print_error_message(const int code);
 
 void print_menu(void);
 

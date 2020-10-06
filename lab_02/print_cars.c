@@ -24,7 +24,7 @@ void print_header(void)
 {
     printf("┌");
 
-    print_column_line(MAX_BRAND_LEN);
+    print_column_line(MAX_BRAND_LEN / 2);
     printf("┬");
 
     print_column_line(MAX_COUNTRY_LEN / 2);
@@ -57,7 +57,7 @@ void print_header(void)
     puts("");
 
     printf("│");
-    print_str("     Марка", MAX_BRAND_LEN);
+    print_str("     Марка", MAX_BRAND_LEN / 2);
 
     printf("│");
     print_str("Страна-производитель", MAX_COUNTRY_LEN / 2);
@@ -90,7 +90,7 @@ void print_header(void)
     puts("");
 
     printf("│");
-    print_str("", MAX_BRAND_LEN);
+    print_str("", MAX_BRAND_LEN / 2);
 
     printf("│");
     print_str("", MAX_COUNTRY_LEN / 2);
@@ -124,7 +124,7 @@ void print_header(void)
 
     printf("├");
 
-    print_column_line(MAX_BRAND_LEN);
+    print_column_line(MAX_BRAND_LEN / 2);
     printf("┼");
 
     print_column_line(MAX_COUNTRY_LEN / 2);
@@ -161,7 +161,7 @@ void print_down_line(void)
 {
     printf("└");
 
-    print_column_line(MAX_BRAND_LEN);
+    print_column_line(MAX_BRAND_LEN / 2);
     printf("┴");
 
     print_column_line(MAX_COUNTRY_LEN / 2);
@@ -198,7 +198,7 @@ void print_down_line(void)
 void print_record(const car_t *const record)
 {
     printf("│");
-    print_str(record->brand, MAX_BRAND_LEN);
+    print_str(record->brand, MAX_BRAND_LEN / 2);
 
     printf("│");
     print_str(record->country, MAX_COUNTRY_LEN / 2);

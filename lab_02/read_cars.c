@@ -10,7 +10,7 @@
 
 int check_and_assign_brand(const char *const read_brand, car_table_t *table, int *const err_row)
 {
-    if (my_strlen(read_brand) > MAX_BRAND_LEN)
+    if (my_strlen(read_brand) > MAX_BRAND_LEN / 2)
     {
         *err_row = table->len;
         return ERR_TOO_LONG_BRAND;
@@ -274,22 +274,24 @@ int read_csv_file(FILE *const file, car_table_t *table, int *const err_row)
     char str[MAX_TABLE_STR_LEN + 2];
     table->len = -1;
     int exit_code = CARS_OK;
+    *err_row = 0;
 
     while (fgets(str, MAX_TABLE_STR_LEN + 3, file))
     {
         table->len++;
         size_t len = table->len;
+        *err_row = table->len + 1;
 
         if (0 == len)
             continue;
 
         if (my_strlen(str) > MAX_TABLE_STR_LEN + 2)
-        {
-            *err_row = len;
             return ERR_TOO_LONG_STR;
-        }
 
         char *field_prt = strtok(str, ",");
+
+        if (!field_prt)
+            return ERR_INCORRECT_FILE;
 
         exit_code = check_and_assign_brand(field_prt, table, err_row);
 
@@ -298,12 +300,18 @@ int read_csv_file(FILE *const file, car_table_t *table, int *const err_row)
 
         field_prt = strtok(NULL, ",");
 
+        if (!field_prt)
+            return ERR_INCORRECT_FILE;
+
         exit_code = check_and_assign_country(field_prt, table, err_row);
 
         if (exit_code)
             return exit_code;
 
         field_prt = strtok(NULL, ",");
+
+        if (!field_prt)
+            return ERR_INCORRECT_FILE;
 
         exit_code = check_and_assign_color(field_prt, table, err_row);
 
@@ -312,12 +320,18 @@ int read_csv_file(FILE *const file, car_table_t *table, int *const err_row)
 
         field_prt = strtok(NULL, ",");
 
+        if (!field_prt)
+            return ERR_INCORRECT_FILE;
+
         exit_code = check_and_assign_price(field_prt, table, err_row);
 
         if (exit_code)
             return exit_code;
 
         field_prt = strtok(NULL, ",");
+
+        if (!field_prt)
+            return ERR_INCORRECT_FILE;
 
         exit_code = check_and_assign_condition(field_prt, table, err_row);
 
@@ -326,12 +340,18 @@ int read_csv_file(FILE *const file, car_table_t *table, int *const err_row)
 
         field_prt = strtok(NULL, ",");
 
+        if (!field_prt)
+            return ERR_INCORRECT_FILE;
+
         exit_code = check_and_assign_warranty(field_prt, table, err_row);
 
         if (exit_code)
             return exit_code;
 
         field_prt = strtok(NULL, ",");
+
+        if (!field_prt)
+            return ERR_INCORRECT_FILE;
 
         exit_code = check_and_assign_year(field_prt, table, err_row);
 
@@ -340,12 +360,18 @@ int read_csv_file(FILE *const file, car_table_t *table, int *const err_row)
 
         field_prt = strtok(NULL, ",");
 
+        if (!field_prt)
+            return ERR_INCORRECT_FILE;
+
         exit_code = check_and_assign_mileage(field_prt, table, err_row);
 
         if (exit_code)
             return exit_code;
 
         field_prt = strtok(NULL, ",");
+
+        if (!field_prt)
+            return ERR_INCORRECT_FILE;
 
         exit_code = check_and_assign_repairs_num(field_prt, table, err_row);
 
@@ -354,11 +380,17 @@ int read_csv_file(FILE *const file, car_table_t *table, int *const err_row)
 
         field_prt = strtok(NULL, ",\n");
 
+        if (!field_prt)
+            return ERR_INCORRECT_FILE;
+
         exit_code = check_and_assign_owners_num(field_prt, table, err_row);
 
         if (exit_code)
             return exit_code;
     }
+
+    if (table->len == 0)
+        return ERR_INCORRECT_FILE;
 
     return exit_code;
 }
@@ -371,6 +403,8 @@ int upload_from_file(car_table_t *table)
     size_t len = 0;
     int read;
 
+    puts("\nФайл с данными в формате csv, где в первой строке расположен заголовок таблицы,");
+    puts("а в последующих по одной записи с полями, разделенными запятой \",\"\n");
     puts("Введите имя файла (с путем при нахождении файла в другой директории):");
 
     if ((read = getline(&file_name, &len, stdin)) != -1)
@@ -383,6 +417,14 @@ int upload_from_file(car_table_t *table)
         
         if (file)
         {
+            fseek(file, 0, SEEK_END);
+            long pos = ftell(file);
+
+            if (pos <= 0)
+                return ERR_EMPTY_FILE;
+
+            rewind(file);
+
             int err_row;
             exit_code = read_csv_file(file, table, &err_row);
 
@@ -390,7 +432,10 @@ int upload_from_file(car_table_t *table)
                 return ERR_CLOSE_FILE;
 
             if (exit_code)
+            {
+                printf("\nОшибка чтения файла в %d-й строке.", err_row);
                 return exit_code;
+            }
         }
         else
             return ERR_OPEN_FILE;
@@ -532,10 +577,10 @@ int read_condition(car_table_t *table)
     char str[3];
 
     if (read_str(str, 4, stdin))
-        return ERR_READ;
+        return ERR_WRONG_CONDITION;
 
     if (my_strlen(str) != 1)
-        return ERR_READ;
+        return ERR_WRONG_CONDITION;
 
     char ch = str[0];
     int err_row;
@@ -547,7 +592,7 @@ int read_condition(car_table_t *table)
         exit_code = check_and_assign_condition("used", table, &err_row);
 
     else
-        exit_code = ERR_WRONG_SYMBOL;
+        exit_code = ERR_WRONG_CONDITION;
 
     return exit_code;
 }
@@ -658,7 +703,7 @@ int read_record(car_table_t *table)
         int exit_code = CARS_OK;
         table->len++;
 
-        printf("Марка: ");
+        printf("Марка (max_len = 15): ");
 
         exit_code = read_brand(table);
 
@@ -668,7 +713,7 @@ int read_record(car_table_t *table)
             return exit_code;
         }
 
-        printf("Cтрана-произоводитель: ");
+        printf("Cтрана-произоводитель (max_len = 20): ");
 
         exit_code = read_country(table);
 
@@ -678,7 +723,7 @@ int read_record(car_table_t *table)
             return exit_code;
         }
 
-        printf("Цвет: ");
+        printf("Цвет (max_len = 15): ");
 
         exit_code = read_color(table);
 
@@ -688,7 +733,7 @@ int read_record(car_table_t *table)
             return exit_code;
         }
 
-        printf("Цена: ");
+        printf("Цена (тыс руб): ");
 
         exit_code = read_price(table);
 
@@ -710,7 +755,7 @@ int read_record(car_table_t *table)
 
         if (NEW == table->table[table->len - 1].condition)
         {
-            printf("Гарантия: ");
+            printf("Гарантия (лет): ");
 
             exit_code = read_warranty(table);
 

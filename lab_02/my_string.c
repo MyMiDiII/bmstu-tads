@@ -30,7 +30,10 @@ int read_str(char *const str, const int max_len, FILE *stream)
     if ('\n' == str[byte_len - 1])
         str[byte_len - 1] = '\0';
     else
+    {
         clear_stdin();
+        return ERR_STR_READ;
+    }
 
     return READ_OK;
 }

@@ -4,7 +4,7 @@
 
 #include <stdio.h>
 
-#define MAX_BRAND_LEN 15
+#define MAX_BRAND_LEN 30
 #define MAX_COUNTRY_LEN 40
 #define MAX_COLOR_LEN 30
 #define MAX_PRICE_LEN 10
@@ -97,5 +97,7 @@ void print_cars_by_keys(car_table_t *table, car_key_table_t *keys);
 void insertionsort(void *first, size_t number, size_t size, int (*comparator) (const void *, const void *));
 
 void compare_heapsorts(car_table_t *table, car_key_table_t *keys);
+
+void compare_sorts_types(car_table_t *table, car_key_table_t *keys);
 
 #endif

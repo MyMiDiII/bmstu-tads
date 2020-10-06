@@ -6,19 +6,130 @@
 #include "my_string.h"
 #include "read_cars.h"
 #include "print_cars.h"
+#include "errors.h"
 
-void print_menu_error(const int code)
+void print_error_message(const int code)
 {
     if (ERR_WRONG_ACTION == code)
     {
-        puts("Введенный код не соответствует ни одному действию.");
-        puts("Попробуйте ещё раз.");
+        puts("\nВведенный код не соответствует ни одному действию.");
+        puts("Попробуйте ещё раз.\n");
     }
     else if (ERR_READ_ACTION == code)
     {
-        puts("Некорректный ввод кода действия.");
-        puts("Попробуйте ещё раз.");
+        puts("\nНекорректный ввод кода действия.");
+        puts("Попробуйте ещё раз.\n");
     }
+    else if (ERR_CLOSE_FILE == code)
+        puts("\nОшибка при закрытии файла!");
+
+    else if (ERR_OPEN_FILE == code)
+        puts("\nОшибка при открытии файла!");
+
+    else if (ERR_READ_FILE_NAME == code)
+        puts("\nНекорректное имя файла!");
+
+    else if (ERR_TOO_LONG_STR == code)
+        puts("\nСлишком длинная строка записи!");
+        
+    else if (ERR_TOO_LONG_BRAND == code)
+        puts("\nСлишком длинная строка марки!");
+
+    else if (ERR_TOO_LONG_COUNTRY == code)
+        puts("\nСлишком длинная строка страны!");
+
+    else if (ERR_TOO_LONG_COLOR == code)
+        puts("\nСлишком длинная строка цвета!");
+
+    else if (ERR_TOO_LONG_PRICE == code)
+        puts("\nСлишком длинная строка цены!");
+        
+    else if (ERR_TOO_LONG_CONDITION == code)
+        puts("\nНекорректный пункт состояния автомобиля!");
+
+    else if (ERR_TOO_LONG_WARRANTY == code)
+        puts("\nСлишком длинная строка гарантии!");
+
+    else if (ERR_TOO_LONG_YEAR == code)
+        puts("\nСлишком длинная строка года!");
+        
+    else if (ERR_TOO_LONG_MILEAGE == code)
+        puts("\nСлишком длинная строка пробега!");
+
+    else if (ERR_TOO_LONG_REPAIRS_NUM == code)
+        puts("\nСлишком длинная строка количества ремонтов!");
+
+    else if (ERR_TOO_LONG_OWNERS_NUM == code)
+        puts("\nСлишком длинная строка количества собственников!");
+
+    else if (ERR_READ_PRICE == code)
+        puts("\nЦена -- целое число!");
+
+    else if (ERR_WRONG_PRICE == code)
+        puts("\nВведенная цена выходит за допустимый диапазон значений!");
+
+    else if (ERR_WRONG_CONDITION == code)
+        puts("\nСостояние задано некорректно (в файле только new или used, в строке -- n/N или u/U)!");
+
+    else if (ERR_USED_WARRANTY == code)
+        puts("\nУ б/у автомобилей не должно быть гарантии!");
+
+    else if (ERR_READ_WARRANTY == code)
+        puts("\nГарантия -- целое число!");
+
+    else if (ERR_WRONG_WARRANTY == code)
+        puts("\nВведенная гарантия выходит за доспустимый диапазон значений!");
+
+    else if (ERR_NEW_YEAR == code)
+        puts("\nУ нового автомобиля не должно быть года выпуска!");
+        
+    else if (ERR_READ_YEAR == code)
+        puts("\nГод -- целое число!");
+
+    else if (ERR_WRONG_YEAR == code)
+        puts("\nЗначение года выходит за допустимый диапазон значений!");
+
+    else if (ERR_NEW_MILEAGE == code)
+        puts("\nУ нового автомобиля не должно быть пробега!");
+        
+    else if (ERR_READ_MILEAGE == code)
+        puts("\nПробег -- целое число!");
+
+    else if (ERR_WRONG_MILEAGE == code)
+        puts("\nЗначение пробега выходит за допустимый диапазон значений!");
+
+    else if (ERR_NEW_OWNERS_NUM == code)
+        puts("\nУ нового автомобиля не должно быть собственников!");
+
+    else if (ERR_READ_OWNERS_NUM == code)
+        puts("\nКоличество собственников -- целое число!");
+
+    else if (ERR_WRONG_OWNERS_NUM == code)
+        puts("\nЗначение количества собственников выходит за допустимый диапазон значений!");
+
+    else if (ERR_NEW_REPAIRS_NUM == code)
+        puts("\nУ нового автомобиля не должно быть ремонта!");
+
+    else if (ERR_READ_REPAIRS_NUM == code)
+        puts("\nКоличество ремонтов -- целое число!");
+
+    else if (ERR_WRONG_REPAIRS_NUM == code)
+        puts("\nЗначение количества ремонтов выходи за допустимый диапазон значений");
+
+    else if (ERR_NO_CARS == code)
+        puts("\nМашин с такой ценой нет!");
+
+    else if (ERR_INCORRECT_PRICES == code)
+        puts("\nЦена \"от\" должна быть ниже цены \"до\"!");
+
+    else if (ERR_NO_RECORDS == code)
+        puts("\nПо заданному запросу ничего не найдено!");
+
+    else if (ERR_EMPTY_FILE == code)
+        puts("\nПустой файл!");
+
+    else if (ERR_INCORRECT_FILE == code)
+        puts("\nНеверный формат данных в файле!");
 }
 
 void print_menu(void)
@@ -34,7 +145,7 @@ void print_menu(void)
     puts("6  - Вывести упорядоченную по цене таблицу");
     puts("7  - Вывести таблицу в упорядоченном по цене виде по упорядоченной таблице ключей");
     puts("8  - Сравнить эффективность работы программы способами 6 и 7");
-    puts("9  - Сравнить время работы сортировок (быстрой и пузырьком)");
+    puts("9  - Сравнить время работы сортировок (пирамидальной и вставками)");
     puts("10 - Вывести цены не новых машин указанной марки");
     puts("     с одним предыдущим собственником, отстутсвием ремонта");
     puts("     в указанном диапазоне цен");
@@ -53,6 +164,9 @@ int choose_action(short int *const action)
 
     char *end_prt;
     long int long_str = strtol(str, &end_prt, 10);
+
+    if (*end_prt != '\0')
+        return ERR_WRONG_ACTION;
     
     if (long_str < 0 || long_str > 10)
         return ERR_WRONG_ACTION;
@@ -72,7 +186,10 @@ int do_action(const short int action, car_table_t *table)
     {
         case 1:
             exit_code = upload_from_file(table);
-            printf("%s\n", exit_code ? "Ошибка при чтении файла!" : "Данные успешно загружены!");            
+
+            if (!exit_code)
+                puts("\nДанные успешно загружены!");
+
             break;
 
         case 2:
@@ -80,15 +197,16 @@ int do_action(const short int action, car_table_t *table)
             break;
 
         case 3:
-            read_record(table);
-            printf("table_len == %ld\n", table->len);
+            exit_code = read_record(table);
             break;
 
         case 4:
-            if (table->len == 0)
-                puts("\nВ таблице нет данных!");
+            if (table->len)
+                exit_code = delete_record(table);
+                
             else
-                delete_record(table);
+                puts("\nВ таблице нет данных!");
+
             break;
 
         case 5:
@@ -99,7 +217,6 @@ int do_action(const short int action, car_table_t *table)
         case 6:
             sorted_table = *table;
             heapsort(&sorted_table.table, sorted_table.len, sizeof(car_t), &compare_records); 
-            // insertionsort(&sorted_table.table, sorted_table.len, sizeof(car_t), &compare_records); 
             print_cars(&sorted_table);
             break;
 
@@ -109,21 +226,42 @@ int do_action(const short int action, car_table_t *table)
             break;
 
         case 8:
-            create_keys_table(table, &keys);
-            compare_heapsorts(table, &keys);
+            if (table->len)
+            {
+                create_keys_table(table, &keys);
+                compare_heapsorts(table, &keys);
+            }
+            else
+            {
+                puts("\nВ таблице нет данных!");
+                puts("Для оценки эффективности добавьте данные!");
+            }
+
             break;
 
         case 9:
-            create_keys_table(table, &keys);
-            compare_sorts_types(table, &keys);
+            if (table->len)
+            {
+                create_keys_table(table, &keys);
+                compare_sorts_types(table, &keys);
+            }
+            else
+            {
+                puts("\nВ таблице нет данных!");
+                puts("Для оценки эффективности добавьте данные!");
+            }
+
             break;
 
         case 10:
-            find_records(table);
+            exit_code = find_records(table);
             break;
 
         default:
-            puts("Пока!");
+            puts("\nСпасибо за использование программы!");
+            puts("Автор:  МАСЛОВА МАРИНА");
+            puts("Группа: ИУ7-33Б");
+            exit(EXIT_SUCCESS);
             break;
     }
 

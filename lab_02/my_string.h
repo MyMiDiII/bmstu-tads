@@ -7,6 +7,7 @@
 
 #define READ_OK 0
 #define ERR_FGETS -1
+#define ERR_STR_READ -2
 
 size_t my_strlen(const char *const str);
 

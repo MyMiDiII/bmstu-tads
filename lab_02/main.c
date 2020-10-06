@@ -11,6 +11,7 @@
 
 #include "menu.h"
 #include "cars.h"
+#include "errors.h"
 
 #define OK 0
 
@@ -32,24 +33,24 @@ int main(void)
 
         if (exit_code)
         {
-            print_menu_error(exit_code);
-            return exit_code;
-        }
+            print_error_message(exit_code);
 
-        if (!action)
-        {
-            puts("Спасибо за использование программы!");
-            break;
+            if (ERR_CLOSE_FILE == exit_code)
+                return ERR_CLOSE_FILE;
+
+            continue;
+            // return exit_code;
         }
 
         exit_code = do_action(action, &table);
 
         if (exit_code)
         {
-            print_menu_error(exit_code);
-            return exit_code;
+            print_error_message(exit_code);
+            continue;
+            // return exit_code;
         }
     }
 
-    return exit_code;
+    return OK;
 }
