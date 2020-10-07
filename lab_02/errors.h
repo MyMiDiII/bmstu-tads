@@ -42,5 +42,6 @@
 #define ERR_READ_ACTION 37
 #define ERR_EMPTY_FILE 38
 #define ERR_INCORRECT_FILE 39
+#define ERR_TOO_BIG_FILE 40
 
 #endif

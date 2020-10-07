@@ -279,6 +279,10 @@ int read_csv_file(FILE *const file, car_table_t *table, int *const err_row)
     while (fgets(str, MAX_TABLE_STR_LEN + 3, file))
     {
         table->len++;
+
+        if (table->len > MAX_TABLE_LEN)
+            return ERR_TOO_BIG_FILE;
+
         size_t len = table->len;
         *err_row = table->len + 1;
 
@@ -629,9 +633,6 @@ int read_year(car_table_t *table)
         return ERR_READ;
 
     exit_code = check_and_assign_year(str, table, &err_row);
-
-    if (exit_code)
-        clear_stdin();
 
     return exit_code;
 }

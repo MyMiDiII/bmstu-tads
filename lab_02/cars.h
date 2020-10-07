@@ -14,7 +14,7 @@
 #define MAX_MILEAGE_LEN 7
 #define MAX_REPAIRS_NUM_LEN 3
 #define MAX_OWNERS_NUM_LEN 3
-#define MAX_TABLE_LEN 55
+#define MAX_TABLE_LEN 500
 #define MAX_TABLE_STR_LEN 105
 
 typedef enum condition

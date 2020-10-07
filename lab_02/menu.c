@@ -130,6 +130,9 @@ void print_error_message(const int code)
 
     else if (ERR_INCORRECT_FILE == code)
         puts("\nНеверный формат данных в файле!");
+
+    else if (ERR_TOO_BIG_FILE == code)
+        puts("\nСлишком большой файл!");
 }
 
 void print_menu(void)

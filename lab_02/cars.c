@@ -33,6 +33,8 @@ int delete_record(car_table_t *table)
     if (count == 0)
         return ERR_NO_CARS;
 
+    puts("\nДанные успешно удалены!");
+
     return CARS_OK;
 }
 
