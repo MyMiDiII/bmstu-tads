@@ -3,3 +3,11 @@
 *.swp
 main
 a.out
+*.zip
+*/html/
+*/latex/
+.vscode/
+lab_02/cars
+lab_02/check_swap/
+lab_02/not good data/
+*.docx
