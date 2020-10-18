@@ -33,6 +33,14 @@ void print_error_message(const int code)
         puts("\nНекорректный ввод кода действия.");
         puts("Попробуйте ещё раз.\n");
     }
+    else if (ERR_TOO_MUCH_NONZERO == code)
+        puts("\nКоличество ненулевых элементов больше количества элементов в матрице!");
+
+    else if (ERR_NONINTEGER == code)
+        puts("\nОшибка при чтении числа!");
+
+    else if (ERR_NONUINTEGER == code)
+        puts("\nВведенное значение выходит за допустимый диапазон значений!");
 }
 
 int choose_action(short int *const action)
@@ -69,7 +77,11 @@ int do_action(const short int action,
     switch (action)
     {
         case 1:
-            puts("Ты молодец!");
+            exit_code = read_matrixes(sparse_matrix, sparse_row, matrix, row);
+
+            if (exit_code)
+                return exit_code;
+
             break;
 
         case 2:

@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <unistd.h>
 
 #include "menu.h"
 #include "errors.h"
@@ -31,6 +32,8 @@ int main(void)
         short int action;
         print_menu();
         exit_code = choose_action(&action);
+        // printf("%d\n", exit_code);
+        // printf("%d\n", action);
 
         if (exit_code)
         {

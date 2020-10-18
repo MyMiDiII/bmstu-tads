@@ -44,6 +44,7 @@ void clear_stdin(void)
     do
     {
         ch = getchar();
+        puts("yea");
     } while (ch != '\n' && ch != EOF);
     
 }
