@@ -5,6 +5,8 @@
 #include "errors.h"
 #include "my_read_functions.h"
 
+#define MAX_PRINT_SIZE 30
+
 int read_matrixes(sparse_matrix_t *sparse_matrix, sparse_matrix_t *sparse_row,
                   matrix_t *matrix, matrix_t *row)
 {
@@ -80,11 +82,11 @@ int read_matrix(matrix_t *matrix, sparse_matrix_t *sparse_matrix,
     if (exit_code)
         return exit_code;
 
-    puts("");
-    print_matrix(matrix);
-    puts("");
-    print_sparse(sparse_matrix);
-    puts("");
+    // puts("");
+    // print_matrix(matrix);
+    // puts("");
+    // print_sparse(sparse_matrix);
+    // puts("");
 
     return exit_code;
 }
@@ -125,11 +127,11 @@ int read_row(matrix_t *row, sparse_matrix_t *sparse_row,
         exit_code = read_row_elements(sparse_row, row, nonzero_num);
     }
 
-    puts("");
-    print_matrix(row);
-    puts("");
-    print_sparse(sparse_row);
-    puts("");
+    // puts("");
+    // print_matrix(row);
+    // puts("");
+    // print_sparse(sparse_row);
+    // puts("");
 
     return exit_code;
 
@@ -290,30 +292,132 @@ void create_sparse_by_matrix(matrix_t *matrix, sparse_matrix_t *sparse_matrix)
             }
         }
     }
+
+    sparse_matrix->sizes.nonzeros = count;
 }
 
-void print_matrix(matrix_t *matrix)
+int user_print(matrix_t *matrix, matrix_t *row,
+               sparse_matrix_t *sparse_matrix, sparse_matrix_t *sparse_row)
 {
-    for (uint i = 0; i < matrix->sizes.rows; i++)
+    int exit_code = MATRIX_OK;
+    uint choice;
+
+    if (!matrix->matrix || !row->matrix)
+        return ERR_NO_MATRIX;
+
+    puts("Выберете формат вывода матриц:");
+    puts("    0 - стандартный;");
+    puts("    1 - разреженный.");
+
+    exit_code = read_uint(&choice);
+    clear_stdin();
+
+    if (exit_code || (choice != 0 && choice != 1))
+        return ERR_PRINT_FLAG_READ;
+
+    if (choice)
     {
-        for (uint j = 0; j < matrix->sizes.columns; j++)
-            printf("%d ", matrix->matrix[i][j]);
-        
+        puts("\nИсходная матрица:");
+        exit_code = print_sparse(sparse_matrix);
+
+        if (exit_code)
+            return exit_code;
+
+        puts("\nИсходный вектор-строка:");
+        exit_code = print_sparse(sparse_row);
+
+        if (exit_code)
+            return exit_code;
+    }
+    else
+    {
+        puts("\nИсходная матрица:");
+        exit_code = print_matrix(matrix);
+
+        if (exit_code)
+            return exit_code;
+
+        puts("\nИсходный вектор-строка:");
+        exit_code = print_matrix(row);
+
+        if (exit_code)
+            return exit_code;
+    }
+
+    return MATRIX_OK;
+}
+
+int print_matrix(matrix_t *matrix)
+{
+    int exit_code = MATRIX_OK;
+    uint print_flag = 1;
+
+    if (matrix->sizes.rows > MAX_PRINT_SIZE ||
+        matrix->sizes.columns > MAX_PRINT_SIZE)
+    {
+        printf("\nОдна из размерностей выводимой матрицы больше %d!\n",
+               MAX_PRINT_SIZE);
+        puts("Вывести матрицу? (0 - нет, 1 - да)");
+
+        exit_code = read_uint(&print_flag);
+        clear_stdin();
+
+        if (exit_code || (print_flag != 0 && print_flag != 1))
+            return ERR_PRINT_FLAG_READ;
+    }
+
+    if (print_flag)
+    {
+        for (uint i = 0; i < matrix->sizes.rows; i++)
+        {
+            for (uint j = 0; j < matrix->sizes.columns; j++)
+                printf("%6d ", matrix->matrix[i][j]);
+            
+            puts("");
+        }
+    }
+
+    return MATRIX_OK;
+}
+
+int print_sparse(sparse_matrix_t *matrix)
+{
+    int exit_code = MATRIX_OK;
+    uint print_flag = 1;
+
+    if (matrix->sizes.rows > MAX_PRINT_SIZE ||
+        matrix->sizes.columns > MAX_PRINT_SIZE ||
+        matrix->sizes.nonzeros > MAX_PRINT_SIZE)
+    {
+        printf("\nОдна из размерностей выводимой матрицы больше %d!\n",
+               MAX_PRINT_SIZE);
+        puts("Вывести матрицу? (0 - нет, 1 - да)");
+
+        exit_code = read_uint(&print_flag);
+        clear_stdin();
+
+        if (exit_code || (print_flag != 0 && print_flag != 1))
+            return ERR_PRINT_FLAG_READ;
+    }
+
+    if (print_flag)
+    {
+        puts("\nЗначения элементов:");
+        for (uint i = 0; i < matrix->sizes.nonzeros; i++)
+            printf("%6d ", matrix->elements[i]);
+        puts("");
+
+        puts("\nНомера строк этих элементов:");
+        for (uint i = 0; i < matrix->sizes.nonzeros; i++)
+            printf("%6d ", matrix->rows[i]);
+        puts("");
+
+        puts("\nНомер элемента, с которого начинается k-ый столбец, "
+             "где k - порядковый номер столбца:");
+        for (uint i = 0; i < matrix->sizes.columns; i++)
+            printf("%6d ", matrix->columns[i]);
         puts("");
     }
-}
 
-void print_sparse(sparse_matrix_t *matrix)
-{
-    for (uint i = 0; i < matrix->sizes.nonzeros; i++)
-        printf("%d ", matrix->elements[i]);
-    puts("");
-
-    for (uint i = 0; i < matrix->sizes.nonzeros; i++)
-        printf("%d ", matrix->rows[i]);
-    puts("");
-
-    for (uint i = 0; i < matrix->sizes.columns; i++)
-        printf("%d ", matrix->columns[i]);
-    puts("");
+    return MATRIX_OK;
 }

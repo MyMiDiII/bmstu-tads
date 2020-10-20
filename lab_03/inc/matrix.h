@@ -51,8 +51,11 @@ int read_row_elements(sparse_matrix_t *sparse_row, matrix_t *row,
 
 void create_sparse_by_matrix(matrix_t *matrix, sparse_matrix_t *sparse_matrix);
 
-void print_matrix(matrix_t *matrix);
+int user_print(matrix_t *matrix, matrix_t *row,
+               sparse_matrix_t *sparse_matrix, sparse_matrix_t *sparse_row);
 
-void print_sparse(sparse_matrix_t *matrix);
+int print_matrix(matrix_t *matrix);
+
+int print_sparse(sparse_matrix_t *matrix);
 
 #endif

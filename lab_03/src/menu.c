@@ -4,6 +4,7 @@
 #include "my_read_functions.h"
 #include "errors.h"
 #include "matrix.h"
+#include "matrixes_actions.h"
 
 void print_menu(void)
 {
@@ -41,6 +42,12 @@ void print_error_message(const int code)
 
     else if (ERR_NONUINTEGER == code)
         puts("\nВведенное значение выходит за допустимый диапазон значений!");
+
+    else if (ERR_NO_MATRIX == code)
+        puts("\nСначала введите или сгенерируйте матрицы!");
+
+    else if (ERR_PRINT_FLAG_READ== code)
+        puts("\nТакого значения нет в списке!");
 }
 
 int choose_action(short int *const action)
@@ -85,7 +92,7 @@ int do_action(const short int action,
             break;
 
         case 3:
-            puts("Ты молодец!");
+            exit_code = user_print(matrix, row, sparse_matrix, sparse_row);
             break;
 
         case 4:
@@ -93,7 +100,7 @@ int do_action(const short int action,
             break;
 
         case 5:
-            puts("Ты молодец!");
+            exit_code = multiply_row_and_matrix(row, matrix);
             break;
 
         default:
