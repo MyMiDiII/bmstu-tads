@@ -2,10 +2,13 @@
 
 #define __MATRIX_H__
 
+#include "my_read_functions.h"
+
 typedef struct
 {
-    unsigned int rows;
-    unsigned int columns;
+    uint rows;
+    uint columns;
+    uint nonzeros;
 } matrix_size_t;
 
 typedef struct
@@ -25,12 +28,31 @@ typedef struct
 int read_matrixes(sparse_matrix_t *sparse_matrix, sparse_matrix_t *sparse_row,
                   matrix_t *matrix, matrix_t *row);
 
-int read_uint(unsigned int *const integer);
+int read_matrix(matrix_t *matrix, sparse_matrix_t *sparse_matrix,
+                uint *const rows_num, uint *const columns_num);
 
-int matrix_init(matrix_t *matrix, matrix_t *row, unsigned int rows, unsigned int columns);
+int read_row(matrix_t *row, sparse_matrix_t *sparse_row,
+             const uint rows_num, const uint columns_num);
 
-int** allocate_matrix(int n, int m);
+int matrix_init(matrix_t *matrix, uint rows, uint columns, uint nonzeros_num);
 
-void free_matrix(int **data, int n);
+int** allocate_matrix(uint n, uint m);
+
+void free_matrix(int **data, uint n);
+
+int sparse_matrix_init(sparse_matrix_t *matrix,
+                       uint rows, uint columns, uint nonzero_num);
+
+int read_matrix_elements(sparse_matrix_t *sparse_matrix, matrix_t *matrix,
+                         const uint nonzeros);
+
+int read_row_elements(sparse_matrix_t *sparse_row, matrix_t *row,
+                         const uint nonzeros);
+
+void create_sparse_by_matrix(matrix_t *matrix, sparse_matrix_t *sparse_matrix);
+
+void print_matrix(matrix_t *matrix);
+
+void print_sparse(sparse_matrix_t *matrix);
 
 #endif

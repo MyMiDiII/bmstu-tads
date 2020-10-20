@@ -25,7 +25,8 @@ int main(void)
     int exit_code = OK;
 
     sparse_matrix_t sparse_matrix, sparse_row;
-    matrix_t matrix, row;
+    matrix_t matrix = { .matrix = NULL, .sizes.rows = 0, .sizes.columns = 0};
+    matrix_t row = { .matrix = NULL, .sizes.rows = 0, .sizes.columns = 0};
 
     while (true)
     {

@@ -1,7 +1,9 @@
 #include <string.h>
 #include <stdio.h>
+#include <limits.h>
 
-#include "my_string.h"
+#include "my_read_functions.h"
+#include "errors.h"
 
 size_t my_strlen(const char *const str)
 {
@@ -44,7 +46,20 @@ void clear_stdin(void)
     do
     {
         ch = getchar();
-        puts("yea");
     } while (ch != '\n' && ch != EOF);
-    
+}
+
+int read_uint(uint *const unint)
+{
+    long long int llint;
+
+    if (scanf("%lld", &llint) != 1)
+        return ERR_NONINTEGER;
+
+    if (llint < 0 || llint > UINT_MAX)
+        return ERR_NONUINTEGER;
+
+    *unint = (uint) llint;
+
+    return MATRIX_OK;
 }

@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "menu.h"
-#include "my_string.h"
+#include "my_read_functions.h"
 #include "errors.h"
 #include "matrix.h"
 
@@ -78,10 +78,6 @@ int do_action(const short int action,
     {
         case 1:
             exit_code = read_matrixes(sparse_matrix, sparse_row, matrix, row);
-
-            if (exit_code)
-                return exit_code;
-
             break;
 
         case 2:
