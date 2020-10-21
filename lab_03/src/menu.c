@@ -96,7 +96,7 @@ int do_action(const short int action,
             break;
 
         case 4:
-            puts("Ты молодец!");
+            exit_code = sparse_multiply_row_and_matrix(sparse_row, sparse_matrix);
             break;
 
         case 5:

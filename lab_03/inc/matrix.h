@@ -15,8 +15,8 @@ typedef struct
 {
     matrix_size_t sizes;
     int *elements;
-    int *rows;
-    int *columns;
+    uint *rows;
+    uint *columns;
 } sparse_matrix_t;
 
 typedef struct

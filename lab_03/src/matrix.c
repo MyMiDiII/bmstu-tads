@@ -114,7 +114,7 @@ int read_row(matrix_t *row, sparse_matrix_t *sparse_row,
     if (exit_code)
         return exit_code;
 
-    exit_code = sparse_matrix_init(sparse_row, 1, columns_num, nonzero_num);
+    exit_code = sparse_matrix_init(sparse_row, 1, rows_num, nonzero_num);
     
     if (exit_code)
         return exit_code;
@@ -294,6 +294,8 @@ void create_sparse_by_matrix(matrix_t *matrix, sparse_matrix_t *sparse_matrix)
     }
 
     sparse_matrix->sizes.nonzeros = count;
+    sparse_matrix->sizes.rows = matrix->sizes.rows;
+    sparse_matrix->sizes.columns = matrix->sizes.columns;
 }
 
 int user_print(matrix_t *matrix, matrix_t *row,
