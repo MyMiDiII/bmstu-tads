@@ -31,8 +31,7 @@ int read_matrixes(sparse_matrix_t *sparse_matrix, sparse_matrix_t *sparse_row,
 int read_matrix(matrix_t *matrix, sparse_matrix_t *sparse_matrix,
                 uint *const rows_num, uint *const columns_num);
 
-int read_row(matrix_t *row, sparse_matrix_t *sparse_row,
-             const uint rows_num, const uint columns_num);
+int read_row(matrix_t *row, sparse_matrix_t *sparse_row, const uint columns_num);
 
 int matrix_init(matrix_t *matrix, uint rows, uint columns, uint nonzeros_num);
 

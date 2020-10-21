@@ -13,5 +13,6 @@
 #define ERR_NONROW 8
 #define ERR_NO_MATRIX 9
 #define ERR_PRINT_FLAG_READ 10
+#define ERR_WRONG_ELEMENT_PARAMETERS 11
 
 #endif

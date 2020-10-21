@@ -107,7 +107,7 @@ int sparse_multiply_row_and_matrix(sparse_matrix_t *row, sparse_matrix_t *matrix
                 end++;
 
             if (end == matrix->sizes.columns)
-                end_el_index = matrix->columns[begin] + 1;
+                end_el_index = matrix->sizes.nonzeros;
             else
                 end_el_index = matrix->columns[end]; 
 
