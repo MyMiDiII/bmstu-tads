@@ -26,7 +26,10 @@ int multiply_row_and_matrix(matrix_t *row, matrix_t *matrix)
                                    matrix->sizes.rows);
 
     if (exit_code)
+    {
+        free_matrix_t(&result);
         return exit_code;
+    }
 
     for (uint i = 0; i < row->sizes.columns; i++)
     {
@@ -39,6 +42,9 @@ int multiply_row_and_matrix(matrix_t *row, matrix_t *matrix)
     create_sparse_by_matrix(&result, &sparse_result);
 
     exit_code = choice_print(&result, &sparse_result);
+
+    free_matrix_t(&result);
+    free_sparse_t(&sparse_result);
     
     return exit_code;
 }
@@ -117,11 +123,17 @@ int sparse_multiply_row_and_matrix(sparse_matrix_t *row, sparse_matrix_t *matrix
     exit_code = matrix_init(&result, 1, matrix->sizes.columns, nonzeros_num);
 
     if (exit_code)
+    {
+        free_sparse_t(&sparse_result);
         return exit_code;
+    }
 
     create_matrix_by_sparse(&sparse_result, &result);
 
     exit_code = choice_print(&result, &sparse_result);
+
+    free_matrix_t(&result);
+    free_sparse_t(&sparse_result);
 
     return exit_code;
 }

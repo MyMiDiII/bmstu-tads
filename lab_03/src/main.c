@@ -24,9 +24,12 @@ int main(void)
 
     int exit_code = OK;
 
-    sparse_matrix_t sparse_matrix, sparse_row;
-    matrix_t matrix = { .matrix = NULL, .sizes.rows = 0, .sizes.columns = 0};
-    matrix_t row = { .matrix = NULL, .sizes.rows = 0, .sizes.columns = 0};
+    sparse_matrix_t sparse_matrix = { .elements = NULL, .rows = NULL, .elements = NULL,
+                                      .sizes.columns = 0, .sizes.rows = 0, .sizes.nonzeros = 0}; 
+    sparse_matrix_t sparse_row = { .elements = NULL, .rows = NULL, .elements = NULL,
+                                      .sizes.columns = 0, .sizes.rows = 0, .sizes.nonzeros = 0}; 
+    matrix_t matrix = { .matrix = NULL, .sizes.rows = 0, .sizes.columns = 0, .sizes.nonzeros = 0};
+    matrix_t row = { .matrix = NULL, .sizes.rows = 0, .sizes.columns = 0, .sizes.nonzeros = 0};
 
     while (true)
     {

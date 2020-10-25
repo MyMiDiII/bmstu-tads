@@ -18,7 +18,10 @@ void print_menu(void)
     puts("5  - Перемножить матрицы стандартным алгоритмом обработки матриц");
     puts("0  - Выход");
     puts("");
-    puts("P. S. Затраченное время и пямять указываются при выполнении умножения (пункты 3 и 4)");
+    puts("P. S.");
+    puts("1) Затраченное время и пямять указываются при выполнении умножения (пункты 3 и 4);");
+    puts("2) Возможен ввод пустых матриц, но не их генерация;");
+    puts("3) Строки и столбцы нумеруются с нуля!");
     puts("");
 }
 
@@ -42,6 +45,21 @@ void print_error_message(const int code)
 
     else if (ERR_NONUINTEGER == code)
         puts("\nВведенное значение выходит за допустимый диапазон значений!");
+
+    else if (ERR_MEMORY_ALLOCATION == code)
+        puts("\nОшибка выделения памяти!");
+
+    else if (ERR_WRONG_MATRIXES_SIZES == code)
+        puts("\nУмножение невозможно из-за неверных размер матриц!");
+
+    else if (ERR_NONROW == code)
+        puts("\nПервая матрица не является вектором-строкой!");
+
+    else if (ERR_WRONG_ELEMENT_PARAMETERS == code)
+        puts("\nНеверные параметры элемента матрицы!");
+
+    else if (ERR_EMPTY_MATRIX == code)
+        puts("\nПри заданном значении заполненности одна из матриц пустая!");
 
     else if (ERR_NO_MATRIX == code)
         puts("\nСначала введите или сгенерируйте матрицы!");
@@ -104,6 +122,11 @@ int do_action(const short int action,
             break;
 
         default:
+            free_matrix_t(matrix);
+            free_matrix_t(row);
+            free_sparse_t(sparse_matrix);
+            free_sparse_t(sparse_row);
+
             puts("\nСпасибо за использование программы!");
             puts("Автор:  МАСЛОВА МАРИНА");
             puts("Группа: ИУ7-33Б");

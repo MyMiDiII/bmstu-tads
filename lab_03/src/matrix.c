@@ -23,7 +23,6 @@ int read_matrixes(sparse_matrix_t *sparse_matrix, sparse_matrix_t *sparse_row,
     exit_code = read_row(row, sparse_row, rows_num);
 
     return exit_code;
-
 }
 
 int read_matrix(matrix_t *matrix, sparse_matrix_t *sparse_matrix,
@@ -31,8 +30,6 @@ int read_matrix(matrix_t *matrix, sparse_matrix_t *sparse_matrix,
 {
     int exit_code = MATRIX_OK;
     uint nonzero_num = 0;
-
-    free_matrix(matrix->matrix, matrix->sizes.rows);
 
     puts("Введите количество строк матрицы: ");
 
@@ -62,6 +59,9 @@ int read_matrix(matrix_t *matrix, sparse_matrix_t *sparse_matrix,
     if (nonzero_num > *rows_num * *columns_num)
         return ERR_TOO_MUCH_NONZERO;
 
+    free_matrix_t(matrix);
+    free_sparse_t(sparse_matrix);
+
     exit_code = matrix_init(matrix, *rows_num, *columns_num, nonzero_num);
 
     if (exit_code)
@@ -70,7 +70,10 @@ int read_matrix(matrix_t *matrix, sparse_matrix_t *sparse_matrix,
     exit_code = sparse_matrix_init(sparse_matrix, *rows_num, *columns_num, nonzero_num);
 
     if (exit_code)
+    {
+        free_matrix(matrix->matrix, matrix->sizes.rows);
         return exit_code;
+    }
 
     if (nonzero_num)
     {
@@ -81,7 +84,35 @@ int read_matrix(matrix_t *matrix, sparse_matrix_t *sparse_matrix,
         clear_stdin();
     }
 
+    if (exit_code)
+    {
+        free_matrix_t(matrix);
+        free_sparse_t(sparse_matrix);
+    }
+
     return exit_code;
+}
+
+void free_matrix_t(matrix_t *matrix)
+{
+    free_matrix(matrix->matrix, matrix->sizes.rows);
+    matrix->matrix = NULL;
+    matrix->sizes.rows = 0;
+    matrix->sizes.columns = 0;
+    matrix->sizes.nonzeros = 0;
+}
+
+void free_sparse_t(sparse_matrix_t *sparse_matrix)
+{
+    free(sparse_matrix->elements);
+    free(sparse_matrix->rows);
+    free(sparse_matrix->columns);
+    sparse_matrix->elements = NULL;
+    sparse_matrix->rows = NULL;
+    sparse_matrix->elements = NULL;
+    sparse_matrix->sizes.columns = 0;
+    sparse_matrix->sizes.rows = 0;
+    sparse_matrix->sizes.nonzeros = 0; 
 }
 
 int read_row(matrix_t *row, sparse_matrix_t *sparse_row, const uint columns_num)
@@ -100,6 +131,9 @@ int read_row(matrix_t *row, sparse_matrix_t *sparse_row, const uint columns_num)
 
     if (nonzero_num > columns_num)
         return ERR_TOO_MUCH_NONZERO;
+    
+    free_matrix_t(row);
+    free_sparse_t(sparse_row);
 
     exit_code = matrix_init(row, 1, columns_num, nonzero_num);
 
@@ -109,7 +143,10 @@ int read_row(matrix_t *row, sparse_matrix_t *sparse_row, const uint columns_num)
     exit_code = sparse_matrix_init(sparse_row, 1, columns_num, nonzero_num);
     
     if (exit_code)
+    {
+        free_matrix_t(row);
         return exit_code;
+    }
 
     if (nonzero_num)
     {
@@ -118,6 +155,12 @@ int read_row(matrix_t *row, sparse_matrix_t *sparse_row, const uint columns_num)
 
         exit_code = read_row_elements(sparse_row, row, nonzero_num);
         clear_stdin();
+    }
+
+    if (exit_code)
+    {
+        free_matrix_t(row);
+        free_sparse_t(sparse_row);
     }
 
     return exit_code;
@@ -203,15 +246,15 @@ int read_matrix_elements(sparse_matrix_t *sparse_matrix, matrix_t *matrix,
         int num;
 
         exit_code = read_uint(&row);
-        
-        if (exit_code || row > sparse_matrix->sizes.rows
-            || row > matrix->sizes.rows)
+
+        if (exit_code || row >= sparse_matrix->sizes.rows
+            || row >= matrix->sizes.rows)
             return ERR_WRONG_ELEMENT_PARAMETERS;
 
         exit_code = read_uint(&column);
         
-        if (exit_code || column > sparse_matrix->sizes.columns
-            || column > matrix->sizes.columns)
+        if (exit_code || column >= sparse_matrix->sizes.columns
+            || column >= matrix->sizes.columns)
             return ERR_WRONG_ELEMENT_PARAMETERS;
 
         if (scanf("%d", &num) != 1)
@@ -237,8 +280,8 @@ int read_row_elements(sparse_matrix_t *sparse_row, matrix_t *row,
 
         exit_code = read_uint(&column);
 
-        if (exit_code || column > sparse_row->sizes.columns
-            || column > row->sizes.columns)
+        if (exit_code || column >= sparse_row->sizes.columns
+            || column >= row->sizes.columns)
             return ERR_WRONG_ELEMENT_PARAMETERS;
         
         if (scanf("%d", &num) != 1)
@@ -444,7 +487,7 @@ int print_sparse(sparse_matrix_t *matrix)
 }
 
 int generate_matrixes(sparse_matrix_t *sparse_matrix, sparse_matrix_t *sparse_row,
-                  matrix_t *matrix, matrix_t *row)
+                      matrix_t *matrix, matrix_t *row)
 {
     puts("\nРазмеры вектора-строки задаются автоматически для возможности умножения.");
     puts("Процент заполенности такой же, как у матрицы (для оценки эффективности).\n");
@@ -452,25 +495,6 @@ int generate_matrixes(sparse_matrix_t *sparse_matrix, sparse_matrix_t *sparse_ro
     int exit_code = MATRIX_OK;
     uint percent = 0;
     uint rows_num, columns_num;
-
-    /* ! в функцию
-    free_matrix(matrix->matrix, matrix->sizes.rows);
-    free_matrix(row->matrix, row->sizes.rows);
-    free(sparse_matrix->elements);
-    free(sparse_matrix->rows);
-    free(sparse_matrix->columns);
-    free(sparse_row->elements);
-    free(sparse_row->rows);
-    free(sparse_row->columns);
-    matrix->matrix = NULL;
-    row->matrix = NULL;
-    sparse_matrix->elements = NULL;
-    sparse_matrix->rows = NULL;
-    sparse_matrix->columns = NULL;
-    sparse_row->elements = NULL;
-    sparse_row->rows = NULL;
-    sparse_row->columns = NULL;
-    */
 
     puts("Введите количество строк матрицы: ");
 
@@ -501,6 +525,11 @@ int generate_matrixes(sparse_matrix_t *sparse_matrix, sparse_matrix_t *sparse_ro
     if (!non_zeros)
         return ERR_EMPTY_MATRIX;
 
+    free_matrix_t(matrix);
+    free_matrix_t(row);
+    free_sparse_t(sparse_matrix);
+    free_sparse_t(sparse_row);
+
     exit_code = matrix_init(matrix, rows_num, columns_num, non_zeros);
 
     if (exit_code)
@@ -509,27 +538,40 @@ int generate_matrixes(sparse_matrix_t *sparse_matrix, sparse_matrix_t *sparse_ro
     exit_code = sparse_matrix_init(sparse_matrix, rows_num, columns_num, non_zeros);
 
     if (exit_code)
+    {
+        free_matrix_t(matrix);
         return exit_code;
+    }
 
     generate_matrix(matrix, sparse_matrix);
-
-    if (exit_code)
-        return exit_code;
 
     non_zeros = my_round(((double) rows_num * percent) / 100);
 
     if (!non_zeros)
+    {
+        free_matrix_t(matrix);
+        free_sparse_t(sparse_matrix);
         return ERR_EMPTY_MATRIX;
+    }
 
     exit_code = matrix_init(row, 1, rows_num, non_zeros);
 
     if (exit_code)
+    {
+        free_matrix_t(matrix);
+        free_sparse_t(sparse_matrix);
         return exit_code;
+    }
 
     exit_code = sparse_matrix_init(sparse_row, 1, rows_num, non_zeros);
 
     if (exit_code)
+    {
+        free_matrix_t(matrix);
+        free_matrix_t(row);
+        free_sparse_t(sparse_matrix);
         return exit_code;
+    }
         
     generate_matrix(row, sparse_row);
 
