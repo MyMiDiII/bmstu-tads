@@ -46,7 +46,14 @@ int multiply_row_and_matrix(matrix_t *row, matrix_t *matrix)
     finish = clock();
 
     clock_t time = finish - start;
-    printf("\nВремя работы (в тактах): %ld\n\n", time);
+    printf("\nВремя работы (в тактах): %ld\n", time);
+
+    int sizeof_matrix = sizeof(int) * matrix->sizes.rows * matrix->sizes.columns;
+    int sizeof_row = sizeof(int) * row->sizes.rows * row->sizes.columns;
+    int sizeof_result = sizeof(int) * row->sizes.rows * matrix->sizes.columns;
+    int mem_result = sizeof_matrix + sizeof_result + sizeof_row;
+
+    printf("Используемая память (в байтах): %d\n\n", mem_result);
 
     create_sparse_by_matrix(&result, &sparse_result);
 
@@ -132,9 +139,19 @@ int sparse_multiply_row_and_matrix(sparse_matrix_t *row, sparse_matrix_t *matrix
     finish = clock();
 
     clock_t time = finish - start;
-    printf("\nВремя работы (в тактах): %ld\n\n", time);
+    printf("\nВремя работы (в тактах): %ld\n", time);
 
     sparse_result.sizes.nonzeros = nonzeros_num;
+
+    int sizeof_matrix = sizeof(int) * matrix->sizes.nonzeros +
+                        sizeof(int) * (matrix->sizes.nonzeros + matrix->sizes.columns);
+    int sizeof_row = sizeof(int) * row->sizes.nonzeros +
+                     sizeof(int) * (row->sizes.nonzeros + row->sizes.columns);
+    int sizeof_result = sizeof(int) * nonzeros_num +
+                        sizeof(int) * (nonzeros_num + sparse_result.sizes.columns);
+    int mem_result = sizeof_matrix + sizeof_result + sizeof_row;
+
+    printf("Используемая память (в байтах): %d\n\n", mem_result);
 
     exit_code = matrix_init(&result, 1, matrix->sizes.columns, nonzeros_num);
 
