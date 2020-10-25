@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <limits.h>
 
-#include "my_read_functions.h"
+#include "my_functions.h"
 #include "errors.h"
 
 size_t my_strlen(const char *const str)
@@ -62,4 +62,17 @@ int read_uint(uint *const unint)
     *unint = (uint) llint;
 
     return MATRIX_OK;
+}
+
+uint my_round(double number)
+{
+    if (number < 0)
+        number = - number;
+
+    double frac = number - (uint) number;
+
+    if (frac < 0.5)
+        return (uint) number;
+    else
+        return (uint) number + 1;
 }

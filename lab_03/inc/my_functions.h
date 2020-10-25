@@ -1,6 +1,6 @@
-#ifndef __MY_READ_FUNCTIONS_H__
+#ifndef __MY_FUNCTIONS_H__
 
-#define __MY_READ_FUNCTIONS_H__
+#define __MY_FUNCTIONS_H__
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -18,5 +18,7 @@ int read_str(char *const str, const int max_len, FILE *stream);
 void clear_stdin(void);
 
 int read_uint(uint *const integer);
+
+uint my_round(double number);
 
 #endif

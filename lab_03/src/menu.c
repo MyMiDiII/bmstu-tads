@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "menu.h"
-#include "my_read_functions.h"
+#include "my_functions.h"
 #include "errors.h"
 #include "matrix.h"
 #include "matrixes_actions.h"
@@ -12,13 +12,13 @@ void print_menu(void)
     puts("          МЕНЮ");
     puts("");
     puts("1  - Ввести вектор-строку и матрицу вручную");
-    puts("2  - Сгенерировать в вектор-строку и матрицу по проценту заполненности");
+    puts("2  - Сгенерировать вектор-строку и матрицу по проценту заполненности");
     puts("3  - Вывести исходную матрицу и вектор-строку");
     puts("4  - Перемножить матрицы алгоритмом обработки разреженных матриц");
     puts("5  - Перемножить матрицы стандартным алгоритмом обработки матриц");
     puts("0  - Выход");
     puts("");
-    puts("P. S. Затраченное время и пямять указываются при выполнении умножения (пунты 3 и 4)");
+    puts("P. S. Затраченное время и пямять указываются при выполнении умножения (пункты 3 и 4)");
     puts("");
 }
 
@@ -88,7 +88,7 @@ int do_action(const short int action,
             break;
 
         case 2:
-            puts("Ты молодец!");
+            exit_code = generate_matrixes(sparse_matrix, sparse_row, matrix, row);
             break;
 
         case 3:

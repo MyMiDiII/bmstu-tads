@@ -2,7 +2,7 @@
 
 #define __MATRIX_H__
 
-#include "my_read_functions.h"
+#include "my_functions.h"
 
 typedef struct
 {
@@ -50,11 +50,18 @@ int read_row_elements(sparse_matrix_t *sparse_row, matrix_t *row,
 
 void create_sparse_by_matrix(matrix_t *matrix, sparse_matrix_t *sparse_matrix);
 
+void create_matrix_by_sparse(sparse_matrix_t *sparse_matrix, matrix_t *matrix);
+
 int user_print(matrix_t *matrix, matrix_t *row,
                sparse_matrix_t *sparse_matrix, sparse_matrix_t *sparse_row);
 
 int print_matrix(matrix_t *matrix);
 
 int print_sparse(sparse_matrix_t *matrix);
+
+int generate_matrixes(sparse_matrix_t *sparse_matrix, sparse_matrix_t *sparse_row,
+                  matrix_t *matrix, matrix_t *row);
+
+void generate_matrix(matrix_t *matrix, sparse_matrix_t *sparse_matrix);
 
 #endif
