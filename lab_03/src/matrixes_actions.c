@@ -1,3 +1,5 @@
+#include <time.h>
+
 #include "matrixes_actions.h"
 #include "errors.h"
 
@@ -31,6 +33,9 @@ int multiply_row_and_matrix(matrix_t *row, matrix_t *matrix)
         return exit_code;
     }
 
+    clock_t start, finish;
+
+    start = clock();
     for (uint i = 0; i < row->sizes.columns; i++)
     {
         result.matrix[0][i] = 0;
@@ -38,6 +43,10 @@ int multiply_row_and_matrix(matrix_t *row, matrix_t *matrix)
         for (uint j = 0; j < row->sizes.columns; j++)
             result.matrix[0][i] += row->matrix[0][j] * matrix->matrix[j][i];
     }
+    finish = clock();
+
+    clock_t time = finish - start;
+    printf("\nВремя работы (в тактах): %ld\n\n", time);
 
     create_sparse_by_matrix(&result, &sparse_result);
 
@@ -75,6 +84,9 @@ int sparse_multiply_row_and_matrix(sparse_matrix_t *row, sparse_matrix_t *matrix
 
     uint nonzeros_num = 0;
 
+    clock_t start, finish;
+
+    start = clock();
     for (uint begin = 0; begin < matrix->sizes.columns; )
     {
         if (matrix->columns[begin] != -1)
@@ -117,6 +129,10 @@ int sparse_multiply_row_and_matrix(sparse_matrix_t *row, sparse_matrix_t *matrix
         else
             begin++;
     }
+    finish = clock();
+
+    clock_t time = finish - start;
+    printf("\nВремя работы (в тактах): %ld\n\n", time);
 
     sparse_result.sizes.nonzeros = nonzeros_num;
 
