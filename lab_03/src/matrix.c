@@ -109,7 +109,7 @@ void free_sparse_t(sparse_matrix_t *sparse_matrix)
     free(sparse_matrix->columns);
     sparse_matrix->elements = NULL;
     sparse_matrix->rows = NULL;
-    sparse_matrix->elements = NULL;
+    sparse_matrix->columns = NULL;
     sparse_matrix->sizes.columns = 0;
     sparse_matrix->sizes.rows = 0;
     sparse_matrix->sizes.nonzeros = 0; 
