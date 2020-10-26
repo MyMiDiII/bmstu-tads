@@ -64,8 +64,11 @@ void print_error_message(const int code)
     else if (ERR_NO_MATRIX == code)
         puts("\nСначала введите или сгенерируйте матрицы!");
 
-    else if (ERR_PRINT_FLAG_READ== code)
+    else if (ERR_PRINT_FLAG_READ == code)
         puts("\nТакого значения нет в списке!");
+
+    else if (ERR_WRONG_PERCENT == code)
+        puts("\nПроцент -- целое число от 0 до 100!");
 }
 
 int choose_action(short int *const action)

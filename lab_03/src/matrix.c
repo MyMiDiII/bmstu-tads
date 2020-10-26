@@ -514,11 +514,14 @@ int generate_matrixes(sparse_matrix_t *sparse_matrix, sparse_matrix_t *sparse_ro
 
     puts("Введите процент заполненности матрицы: ");
 
-    read_uint(&percent);
+    exit_code = read_uint(&percent);
     clear_stdin();
 
     if (exit_code)
         return exit_code;
+
+    if (percent < 0 || percent > 100)
+        return ERR_WRONG_PERCENT;
 
     uint non_zeros = my_round(((double) rows_num * columns_num * percent) / 100);
 
