@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <wchar.h>
 
 #include "list_stack.h"
 #include "errors.h"
 
-int ls_pop(list_stack_t **stack, char *const element)
+int ls_pop(list_stack_t **stack, wint_t *const element)
 {
     if (!stack)
         return ERR_NULL_POINTER;
@@ -21,7 +22,7 @@ int ls_pop(list_stack_t **stack, char *const element)
     return OK;
 }
 
-int ls_push(list_stack_t **stack, const char element)
+int ls_push(list_stack_t **stack, const wint_t element)
 {
     if (!stack)
         return ERR_NULL_POINTER;
@@ -46,17 +47,17 @@ int ls_print(list_stack_t **stack)
     list_stack_t *node = NULL;
     while (*stack)
     {
-        printf("%p  ", (void *) (*stack));
-        printf("%18c\n", (*stack)->data);
+        fwprintf(stdout, L"%p  ", (void *) (*stack));
+        fwprintf(stdout, L"%18lc\n", (*stack)->data);
 
-        char el;
+        wint_t el;
         ls_pop(stack, &el);
         ls_push(&node, el);
     }
 
     while (node)
     {
-        char el;
+        wint_t el;
         ls_pop(&node, &el);
         ls_push(stack, el);
     }

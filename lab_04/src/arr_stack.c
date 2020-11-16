@@ -1,9 +1,10 @@
 #include <stdio.h>
+#include <wchar.h>
 
 #include "arr_stack.h"
 #include "errors.h"
 
-int as_pop(arr_stack_t *stack, char *const element)
+int as_pop(arr_stack_t *stack, wint_t *const element)
 {
     if (!stack->length)
         return ERR_EMPTY_STACK;
@@ -13,7 +14,7 @@ int as_pop(arr_stack_t *stack, char *const element)
     return OK;
 }
 
-int as_push(arr_stack_t *stack, const char element)
+int as_push(arr_stack_t *stack, const wint_t element)
 {
     if (stack->length == MAX_ARR_LEN)
         return ERR_FULL_STACK;
@@ -31,15 +32,15 @@ int as_print(arr_stack_t *stack)
     arr_stack_t tmp = { .length = 0 };
     while (stack->length)
     {
-        char el;
+        wint_t el;
         as_pop(stack, &el);
         as_push(&tmp, el);
-        printf("%c\n", el);
+        fwprintf(stdout, L"%lc\n", el);
     }
 
     while (tmp.length)
     {
-        char el;
+        wint_t el;
         as_pop(&tmp, &el);
         as_push(stack, el);
     }

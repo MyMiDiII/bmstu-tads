@@ -3,6 +3,7 @@
 #include "free_areas.h"
 #include "list_stack.h"
 #include "errors.h"
+#include "my_functions.h"
 
 int add_area(free_areas_t *array, list_stack_t *const ptr)
 {
@@ -51,9 +52,9 @@ int print_free_areas(free_areas_t *array)
     if (!array->len)
         return ERR_EMPTY_ARR;
 
-    puts("\nАдреса освобожденных областей:");
-    for (int i = 0; i <array->len; i++)
-        printf("%p\n", (void *) array->arr[i]);
+    putws(L"\nАдреса освобожденных областей:\n");
+    for (int i = 0; i < array->len; i++)
+        fwprintf(stdout, L"%p\n", (void *) array->arr[i]);
         
     return OK;
 }

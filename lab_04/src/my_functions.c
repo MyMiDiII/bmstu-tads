@@ -1,6 +1,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <limits.h>
+#include <wchar.h>
 
 #include "my_functions.h"
 #include "errors.h"
@@ -22,6 +23,24 @@ size_t my_strlen(const char *const str)
     return len;
 }
 
+int read_wstr(wchar_t *const str, const int max_len, FILE *stream)
+{
+    if (!fgetws(str, max_len, stream))
+        return ERR_FGETS;
+
+    size_t byte_len = wcslen(str);
+
+    if (L'\n' == str[byte_len - 1])
+        str[byte_len - 1] = '\0';
+    else
+    {
+        wclear_stdin();
+        return ERR_STR_READ;
+    }
+
+    return READ_OK;
+}
+
 int read_str(char *const str, const int max_len, FILE *stream)
 {
     if (!fgets(str, max_len, stream))
@@ -40,6 +59,14 @@ int read_str(char *const str, const int max_len, FILE *stream)
     return READ_OK;
 }
 
+void wclear_stdin(void)
+{
+    wint_t ch;
+    do
+    {
+        ch = getwchar();
+    } while (ch != '\n' && ch != WEOF);
+}
 void clear_stdin(void)
 {
     char ch;
@@ -75,4 +102,9 @@ uint my_round(double number)
         return (uint) number;
     else
         return (uint) number + 1;
+}
+
+int putws(const wchar_t *ws)
+{
+    return fputws(ws, stdout);
 }
