@@ -9,6 +9,7 @@
 
 #include "arr_stack.h"
 #include "list_stack.h"
+#include "free_areas.h"
 
 #define MAX_MENU_ITEM_LEN 2
 
@@ -39,8 +40,7 @@ void print_error_message(const int code);
  * \param row Указатель на вектор-строку в стандартном виде
  * \return Код ошибки
  */
-int do_action(const short int action,
-              arr_stack_t *a_stack,
-              list_stack_t **l_stack);
+int do_action(const short int action, arr_stack_t *a_stack,
+              list_stack_t **l_stack, free_areas_t *prts);
 
 #endif
