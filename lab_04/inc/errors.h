@@ -15,5 +15,7 @@
 #define ERR_FULL_STACK 5
 #define ERR_NONUINTEGER 6
 #define ERR_NONINTEGER 7
+#define ERR_FULL_ARR 8
+#define ERR_EMPTY_ARR 9
 
 #endif

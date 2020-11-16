@@ -17,6 +17,6 @@ int ls_pop(list_stack_t **stack, char *const element);
 
 int ls_push(list_stack_t **stack, const char element);
 
-int ls_print(list_stack_t *stack);
+int ls_print(list_stack_t **stack);
 
 #endif

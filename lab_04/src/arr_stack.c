@@ -28,8 +28,21 @@ int as_print(arr_stack_t *stack)
     if (!stack->length)
         return ERR_EMPTY_STACK;
 
-    for (int i = stack->length - 1; i >= 0; i--)
-        printf("%c\n", stack->array[i]);
+    arr_stack_t tmp = { .length = 0 };
+    while (stack->length)
+    {
+        char el;
+        as_pop(stack, &el);
+        as_push(&tmp, el);
+        printf("%c\n", el);
+    }
+
+    while (tmp.length)
+    {
+        char el;
+        as_pop(&tmp, &el);
+        as_push(stack, el);
+    }
         
     return OK;
 }
