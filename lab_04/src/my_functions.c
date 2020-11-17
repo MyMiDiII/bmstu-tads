@@ -91,6 +91,21 @@ int read_uint(uint *const unint)
     return OK;
 }
 
+int read_int(int *const integer)
+{
+    long long int llint;
+
+    if (fwscanf(stdin, L"%lld", &llint) != 1)
+        return ERR_NONINTEGER;
+
+    if (llint < INT_MIN || llint > INT_MAX)
+        return ERR_NONINTEGER;
+
+    *integer = (int) llint;
+
+    return OK;
+}
+
 uint my_round(double number)
 {
     if (number < 0)

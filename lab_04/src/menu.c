@@ -8,52 +8,54 @@
 #include "list_stack.h"
 #include "free_areas.h"
 #include "palindrome.h"
+#include "read_symbols.h"
+#include "num_pops.h"
 
 void print_menu(void)
 {
     putws(L"\n          СТЕК\n\n");
-    putws(L"1  - Добавить элемент в стек на массиве\n");
-    putws(L"2  - Удалить элемент из стека на массиве\n");
+    putws(L"1  - Добавить элементы в стек на массиве\n");
+    putws(L"2  - Удалить элементы из стека на массиве\n");
     putws(L"3  - Вывести текущее состояние стека на массиве\n");
-    putws(L"4  - Добавить элемент в стек на списке\n");
-    putws(L"5  - Удалить элемент в стек на списке\n");
+    putws(L"4  - Добавить элементы в стек на списке\n");
+    putws(L"5  - Удалить элементы из стека на списке\n");
     putws(L"6  - Вывести текущее состояние стека на списке\n");
     putws(L"7  - Вывести адреса освобожденных областей\n");
     putws(L"8  - Проверить, является ли слово палиндромом\n");
-    putws(L"0  - Выход\n");
-    putws(L"");
-    putws(L"P. S.");
-    putws(L"1) ;");
-    putws(L"2) ;");
-    putws(L"3) ");
-    putws(L"");
+    putws(L"0  - Выход\n\n");
 }
 
 void print_error_message(const int code)
 {
     if (ERR_WRONG_ACTION == code)
     {
-        putws(L"\nВведенный код не соответствует ни одному действию.");
+        putws(L"\nВведенный код не соответствует ни одному действию.\n");
         putws(L"Попробуйте ещё раз.\n");
     }
     else if (ERR_READ_ACTION == code)
     {
-        putws(L"\nНекорректный ввод кода действия.");
+        putws(L"\nНекорректный ввод кода действия.\n");
         putws(L"Попробуйте ещё раз.\n");
     }
     else if (ERR_NULL_POINTER == code)
-        putws(L"\nВ одну из функций передан нулевой указатель.");
+        putws(L"\nВ одну из функций передан нулевой указатель.\n");
 
     else if (ERR_EMPTY_STACK == code)
-        putws(L"\nСтек пуст!");
+        putws(L"\nСтек пуст!\n");
 
     else if (ERR_FULL_STACK == code)
-        putws(L"\nПереполнение стека!");
+        putws(L"\nПереполнение стека!\n");
+
+    else if (ERR_NONINTEGER == code)
+        putws(L"\nВведенные данные не соответствуют типу int!\n");
+
+    else if (ERR_INVALID_NUM == code)
+        putws(L"\nВведенное количество больше количества элементов в стеке!\n");
 }
 
 int choose_action(short int *const action)
 {
-    putws(L"Выберете пункт меню: ");
+    putws(L"Выберете пункт меню: \n");
 
     wchar_t str[MAX_MENU_ITEM_LEN + 2];
 
@@ -83,63 +85,77 @@ int do_action(const short int action, arr_stack_t *a_stack,
     {
         case 1:
         {
-            exit_code = as_push(a_stack, 'a'); 
+            putws(L"\nСчитываются все символы до символа перехода строки!\n");
+            putws(L"Введите символы для добавления:\n");
+
+            exit_code = as_read_symbols(a_stack);
             
             if (!exit_code)
-                putws(L"\nЭлемент успешно добавлен!");
+                putws(L"\nЭлементы успешно добавлены!\n");
 
             break;
         }
 
         case 2:
         {
-            wint_t el1;
-            exit_code = as_pop(a_stack, &el1);
+            int num;
+            putws(L"Введите количество удаляемых элементов:\n");
+            exit_code = read_int(&num);
+            wclear_stdin();
+
+            if (num > a_stack->length)
+                exit_code = ERR_INVALID_NUM;
 
             if (!exit_code)
-                fwprintf(stdout, L"\nЭлемент '%c' успешно удален!\n", el1);
+                exit_code = as_num_pop(a_stack, num);
 
             break;
         }
 
         case 3:
         {
-            putws(L"\nТекущее состояние стека на массиве:");
+            putws(L"\nТекущее состояние стека на массиве:\n");
+
             exit_code = as_print(a_stack);
+
             break;
         }
 
         case 4:
         {
-            exit_code = ls_push(l_stack, 'a');
+            putws(L"\n\nСчитываются все символы до символа перехода строки!\n");
+            putws(L"Введите символы для добавления:\n");
+
+            exit_code = ls_read_symbols(l_stack, ptrs);
 
             if (!exit_code)
-                putws(L"\nЭлемент успешно добавлен!");
+                putws(L"\nЭлементы успешно добавлены!\n");
 
-            delete_area(ptrs, *l_stack);
             break;
         }
 
         case 5:
         {
-            wint_t el2;
+            int num;
+            putws(L"Введите количество удаляемых элементов:\n");
+            exit_code = read_int(&num);
+            wclear_stdin();
 
-            add_area(ptrs, *l_stack);
-
-            exit_code = ls_pop(l_stack, &el2);
+            if (*l_stack && num > (*l_stack)->index + 1)
+                exit_code = ERR_INVALID_NUM;
 
             if (!exit_code)
-                fwprintf(stdout, L"\nЭлемент '%c' успешно удален!\n", el2);
+                exit_code = ls_num_pop(l_stack, num, ptrs);
 
             break;
         }
 
         case 6:
         {
-            putws(L"\nТекущее состояние стека на списке:");
+            putws(L"\nТекущее состояние стека на списке:\n");
             
             if (*l_stack)
-                putws(L"\n    Адрес узла   Значение элемента");
+                putws(L"\n    Адрес узла   Значение элемента\n");
 
             exit_code = ls_print(l_stack);
             break;
@@ -149,8 +165,8 @@ int do_action(const short int action, arr_stack_t *a_stack,
         {
             if (print_free_areas(ptrs))
             {
-                putws(L"\nПамять ещё не выделялась, или все освобожденные");
-                putws(L"области были снова использованы!");
+                putws(L"\nПамять ещё не выделялась, или все освобожденные\n");
+                putws(L"области были снова использованы!\n");
             }
             break;
         }
@@ -162,11 +178,17 @@ int do_action(const short int action, arr_stack_t *a_stack,
         }
 
         default:
-            putws(L"\nСпасибо за использование программы!");
-            putws(L"Автор:  МАСЛОВА МАРИНА");
-            putws(L"Группа: ИУ7-33Б");
+        {
+            wint_t el;
+            while (*l_stack)
+                ls_pop(l_stack, &el);
+
+            putws(L"\nСпасибо за использование программы!\n");
+            putws(L"Автор:  МАСЛОВА МАРИНА\n");
+            putws(L"Группа: ИУ7-33Б\n");
             exit(EXIT_SUCCESS);
             break;
+        }
     }
 
     return exit_code;

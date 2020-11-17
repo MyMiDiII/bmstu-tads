@@ -39,7 +39,9 @@ void wclear_stdin(void);
  * \param integer Указатель на считываемое число
  * \return Код ошибки 
  */
-int read_uint(uint *const integer);
+int read_uint(uint *const unint);
+
+int read_int(int *const integer);
 
 /**
  * Округляет число по математическим правилам.

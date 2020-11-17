@@ -4,6 +4,7 @@
 
 #include "list_stack.h"
 #include "errors.h"
+#include "free_areas.h"
 
 int ls_pop(list_stack_t **stack, wint_t *const element)
 {
@@ -27,7 +28,7 @@ int ls_push(list_stack_t **stack, const wint_t element)
     if (!stack)
         return ERR_NULL_POINTER;
     
-    if (*stack && (*stack)->index == MAX_LIST_LEN)
+    if (*stack && (*stack)->index + 1 == MAX_LIST_LEN)
         return ERR_FULL_STACK;
 
     list_stack_t *node = malloc(sizeof(list_stack_t));
