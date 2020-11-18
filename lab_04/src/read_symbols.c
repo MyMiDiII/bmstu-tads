@@ -21,6 +21,8 @@ int as_read_symbols(arr_stack_t *stack)
         exit_code = as_push(stack, cur_ch);
         finish = clock();
         time += finish - start;
+        if (!exit_code)
+            fwprintf(stdout, L"\nЭлемент '%lc' успешно добавлен!\n", cur_ch);
     }
 
     if (!exit_code)
@@ -44,6 +46,8 @@ int ls_read_symbols(list_stack_t **stack, free_areas_t *ptrs)
         finish = clock();
         time += finish - start;
         delete_area(ptrs, *stack);
+        if (!exit_code)
+            fwprintf(stdout, L"\nЭлемент '%lc' успешно добавлен!\n", cur_ch);
     }
 
     if (!exit_code)

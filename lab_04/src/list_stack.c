@@ -63,5 +63,8 @@ int ls_print(list_stack_t **stack)
         ls_push(stack, el);
     }
 
+    fwprintf(stdout, L"\nПамять (байт): %ld\n",
+             sizeof(list_stack_t) * ((*stack)->index + 1));
+
     return OK;
 }

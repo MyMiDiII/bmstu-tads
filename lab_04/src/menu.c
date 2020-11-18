@@ -47,10 +47,10 @@ void print_error_message(const int code)
         putws(L"\nПереполнение стека!\n");
 
     else if (ERR_NONINTEGER == code)
-        putws(L"\nВведенные данные не соответствуют типу int!\n");
+        putws(L"\nВведенные данные нецелочисленные!\n");
 
     else if (ERR_INVALID_NUM == code)
-        putws(L"\nВведенное количество больше количества элементов в стеке!\n");
+        putws(L"\nВведенное количество выходит за допустимый диапазон!\n");
 }
 
 int choose_action(short int *const action)
@@ -90,24 +90,26 @@ int do_action(const short int action, arr_stack_t *a_stack,
 
             exit_code = as_read_symbols(a_stack);
             
-            if (!exit_code)
-                putws(L"\nЭлементы успешно добавлены!\n");
-
             break;
         }
 
         case 2:
         {
-            int num;
-            putws(L"Введите количество удаляемых элементов:\n");
-            exit_code = read_int(&num);
-            wclear_stdin();
+            if (!a_stack->length)
+                exit_code = ERR_EMPTY_STACK;
+            else
+            {
+                int num;
+                putws(L"\nВведите количество удаляемых элементов:\n");
+                exit_code = read_int(&num);
+                wclear_stdin();
 
-            if (num > a_stack->length)
-                exit_code = ERR_INVALID_NUM;
+                if (!exit_code && (num <= 0 || num > a_stack->length))
+                    exit_code = ERR_INVALID_NUM;
 
-            if (!exit_code)
-                exit_code = as_num_pop(a_stack, num);
+                if (!exit_code)
+                    exit_code = as_num_pop(a_stack, num);
+            }
 
             break;
         }
@@ -128,25 +130,27 @@ int do_action(const short int action, arr_stack_t *a_stack,
 
             exit_code = ls_read_symbols(l_stack, ptrs);
 
-            if (!exit_code)
-                putws(L"\nЭлементы успешно добавлены!\n");
-
             break;
         }
 
         case 5:
         {
-            int num;
-            putws(L"Введите количество удаляемых элементов:\n");
-            exit_code = read_int(&num);
-            wclear_stdin();
+            if (!*l_stack)
+                exit_code = ERR_EMPTY_STACK;
+            else
+            {
+                int num;
+                putws(L"\nВведите количество удаляемых элементов:\n");
+                exit_code = read_int(&num);
+                wclear_stdin();
 
-            if (*l_stack && num > (*l_stack)->index + 1)
-                exit_code = ERR_INVALID_NUM;
+                if (!exit_code && (num <= 0 ||
+                    (*l_stack && num > (*l_stack)->index + 1)))
+                    exit_code = ERR_INVALID_NUM;
 
-            if (!exit_code)
-                exit_code = ls_num_pop(l_stack, num, ptrs);
-
+                if (!exit_code)
+                    exit_code = ls_num_pop(l_stack, num, ptrs);
+            }
             break;
         }
 

@@ -21,6 +21,9 @@ int read_word(arr_stack_t *a_word, list_stack_t **l_word)
             exit_code = ls_push(l_word, cur_ch);
     }
 
+    if (exit_code)
+        wclear_stdin();
+
     return exit_code;
 }
 
@@ -88,6 +91,7 @@ int check_word(void)
     arr_stack_t a_word = { .length = 0};
     list_stack_t *l_word = NULL;
 
+    putws(L"\nВведите строку:\n");
     exit_code = read_word(&a_word, &l_word);
 
     if (!exit_code)
@@ -96,7 +100,7 @@ int check_word(void)
         clock_t start, finish;
 
 
-        putws(L"СТЕК НА МАССИВЕ\n");
+        putws(L"\nСТЕК НА МАССИВЕ\n");
         start = clock();
         a_flag = a_is_palindrome(&a_word);
         finish = clock();

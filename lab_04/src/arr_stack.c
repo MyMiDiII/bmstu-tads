@@ -44,6 +44,8 @@ int as_print(arr_stack_t *stack)
         as_pop(&tmp, &el);
         as_push(stack, el);
     }
+
+    fwprintf(stdout, L"\nПамять (байт): %ld\n", sizeof(*stack));
         
     return OK;
 }
