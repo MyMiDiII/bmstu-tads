@@ -4,7 +4,7 @@
 
 #include <wchar.h>
 
-#define MAX_LIST_LEN 1000
+#define MAX_LIST_LEN 10
 
 typedef struct list_stack_t list_stack_t;
 

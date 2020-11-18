@@ -4,7 +4,7 @@
 
 #include <wchar.h>
 
-#define MAX_ARR_LEN 1000
+#define MAX_ARR_LEN 10
 
 typedef struct
 {

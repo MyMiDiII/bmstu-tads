@@ -4,7 +4,7 @@
 
 #include "list_stack.h"
 
-#define MAX_AREAS_NUM 1000
+#define MAX_AREAS_NUM 10
 
 typedef struct
 {
