@@ -133,3 +133,14 @@ int lq_pushs(list_queue_t *queue)
 
     return exit_code;
 }
+
+int lq_clear(list_queue_t *queue)
+{
+    int exit_code = OK;
+    order_t el;
+
+    while (!exit_code && queue->length)
+       exit_code = lq_pop(queue, &el);
+
+    return exit_code;
+}

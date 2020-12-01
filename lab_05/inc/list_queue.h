@@ -32,4 +32,6 @@ int lq_pushs(list_queue_t *queue);
 
 int lq_pops(list_queue_t *queue);
 
+int lq_clear(list_queue_t *queue);
+
 #endif

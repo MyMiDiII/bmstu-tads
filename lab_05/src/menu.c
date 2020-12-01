@@ -8,18 +8,16 @@
 #include "arr_queue.h"
 #include "list_queue.h"
 #include "modeling.h"
-//#include "free_areas.h"
 
 void print_menu(void)
 {
-    putws(L"\n          СТЕК\n\n");
+    putws(L"\n          ОЧЕРЕДЬ\n\n");
     putws(L"1  - Добавить элементы в очередь на массиве\n");
     putws(L"2  - Удалить элементы из очереди на массиве\n");
     putws(L"3  - Вывести адреса элементов очереди на массиве\n");
     putws(L"4  - Добавить элементы в очередь на списке\n");
     putws(L"5  - Удалить элементы из очереди на списке\n");
     putws(L"6  - Вывести адреса элементов очереди на списке\n");
-    putws(L"8  - Вывести адреса освобожденных областей\n");
     putws(L"7  - Запустить моделирование\n");
     putws(L"0  - Выход\n\n");
 }
@@ -116,7 +114,7 @@ int do_action(const short int action, arr_queue_t *a_queue,
 
         case 6:
         {
-            putws(L"\nТекущее состояние стека на списке:\n");
+            putws(L"\nАдреса элементов очереди на списке:\n");
             
             exit_code = lq_print(l_queue);
             break;
@@ -129,19 +127,9 @@ int do_action(const short int action, arr_queue_t *a_queue,
             break;
         }
 
-        /*
-        case 8:
-        {
-            // exit_code = check_word();
-            break;
-        }
-        */
-
         default:
         {
-            // wint_t el;
-            // while (*l_queue)
-            //     ls_pop(l_queue, &el);
+            lq_clear(l_queue);
 
             putws(L"\nСпасибо за использование программы!\n");
             putws(L"Автор:  МАСЛОВА МАРИНА\n");

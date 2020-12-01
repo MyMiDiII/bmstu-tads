@@ -83,7 +83,7 @@ int read_uint(uint *const unint)
     if (fwscanf(stdin, L"%lld", &llint) != 1)
         return ERR_NONINTEGER;
 
-    if (llint < 0 || llint > UINT_MAX)
+    if (llint <= 0 || llint > UINT_MAX)
         return ERR_NONUINTEGER;
 
     *unint = (uint) llint;
