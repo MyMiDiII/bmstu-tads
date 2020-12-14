@@ -65,7 +65,7 @@ int choose_action(short int *const action)
     if (*end_prt != L'\0')
         return ERR_WRONG_ACTION;
     
-    if (long_str < 0 || long_str > 8)
+    if (long_str < 0 || long_str > 7)
         return ERR_WRONG_ACTION;
 
     *action = (short int) long_str;

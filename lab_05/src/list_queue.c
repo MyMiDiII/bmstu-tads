@@ -52,7 +52,7 @@ int lq_push(list_queue_t *queue, const order_t order)
 
 int lq_print(list_queue_t *queue)
 {
-    if (!queue)
+    if (!queue->length)
         return ERR_EMPTY_QUEUE;
 
     list_queue_t tmp = { .in = NULL, .length = 0, .out = 0 };

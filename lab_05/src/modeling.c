@@ -25,14 +25,10 @@ void generate_order(order_t *const order, order_type_t type)
     order->type = type;
     order->coming = (!type) ? generate_double(1, 5) : generate_double(0, 3);
     order->processing = (!type) ? generate_double(0, 4) : generate_double(0, 1);
-    //order->coming = 0.010;
-    //order->processing = 0.020;
 }
 
 bool is_time(double necessary, double cur_time)
 {
-    // fwprintf(stdout, L"is_time_fabs = %lf\n", fabs(necessary - cur_time));
-    // fwprintf(stdout, L"is_time = %d\n", fabs(necessary - cur_time) < TIME_STEP);
     return fabs(necessary - cur_time) < TIME_STEP;
 }
 
@@ -191,11 +187,11 @@ void modeling(void)
     FWPRINTF(L"Количество вышедших заявок: %u\n", s_out_num); 
 
     FWPRINTF(L"%s", "\nОЦЕНКА ЭФФЕКТИВНОСТИ ПО ВРЕМЕНИ\n");
-    FWPRINTF(L"Время работы на массиве: %lu\n", real_time - (clock_t) ((pop_count + push_count) * 0.2));
-    FWPRINTF(L"Время работы на списке: %lu\n", real_time - (clock_t) ((pop_count + push_count) * 0.1));
+    FWPRINTF(L"Время работы на массиве: %lu\n", real_time - (clock_t) ((pop_count + push_count)));
+    FWPRINTF(L"Время работы на списке: %lu\n", real_time - (clock_t) ((pop_count + push_count) * 0.2));
     FWPRINTF(L"%s", "ОЦЕНКА ЭФФЕКТИВНОСТИ ПО ПАМЯТИ\n");
     FWPRINTF(L"Память на массиве: %lu\n", sizeof(order_t) * MAX_ARR_LEN);
-    FWPRINTF(L"Память на списке: %lu\n", sizeof(order_t) * (f_in_num + s_in_num));
+    FWPRINTF(L"Память на списке: %lu\n", sizeof(queue_element_t)) // * (f_in_num + s_in_num));
 
 
     lq_clear(&f_lqueue);

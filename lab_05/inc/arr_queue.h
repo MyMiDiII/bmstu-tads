@@ -5,7 +5,7 @@
 #include "order.h"
 #include "my_functions.h"
 
-#define MAX_ARR_LEN 10000
+#define MAX_ARR_LEN 2000
 
 typedef struct
 {
