@@ -7,7 +7,7 @@ vpath %.c $(SRCDIR) $(UNITDIR)
 
 CC := gcc
 PATHFLAG := -I$(INCDIR)
-CFLAGS := -std=c99 $(PATHFLAG) -Wall -Werror -Wpedantic -lm
+CFLAGS := -std=c99 $(PATHFLAG) -Wall -Werror -Wpedantic
 OBGSFLAGS := -lcheck -lpthread -lrt
 
 SRCS := $(wildcard $(SRCDIR)*.c)
@@ -26,7 +26,7 @@ debug : app.exe
 release : clean app.exe
 
 app.exe : $(OBGS) 
-	$(CC) $(CFLAGS) $^ -o $@
+	$(CC) $(CFLAGS) $^ -o $@ -lm
 
 $(OUTDIR)%.o : %.c
 	@mkdir -p $(@D)

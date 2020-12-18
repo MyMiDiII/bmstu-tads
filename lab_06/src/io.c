@@ -118,6 +118,25 @@ int read_size(int *const size)
     return OK;
 }
 
+int read_comp(int *const size)
+{
+    int exit_code = OK;
+    int integer;
+
+    exit_code = read_int(&integer);
+    clear_stdin();
+
+    if (exit_code)
+        return exit_code;
+
+    if (integer < 0)
+        return ERR_NONSIZE;
+
+    *size = integer;
+
+    return OK;
+}
+
 int read_answer(bool *const answer)
 {
     int exit_code = OK;
@@ -248,7 +267,7 @@ int add_word(node_t **tree, node_t **balanced_tree,
         exit_code = add_word_to_hash_table(table, word2);
         finish = tick();
         print_results("\033[36m\nДОБАВЛЕНИЕ В ХЕШ-ТАБЛИЦУ\033[0m", finish - start,
-                       node_number * (sizeof(node_t) + 1) + file_size(file) + \
+                       node_number * (sizeof(word_list_t) + 1) + file_size(file) + \
                        table->table_size * sizeof(word_list_t *), hash_comparisons);
         puts("Полученная хеш-таблица:");
         print_table(table);
@@ -259,9 +278,9 @@ int add_word(node_t **tree, node_t **balanced_tree,
         int64_t start, finish;
         start = tick();
         add_to_file(file, word2);
-        fseek(file, 0, SEEK_SET);
         finish = tick();
-        print_results("\033[36m\nДОБАВЛЕНИЕ В ФАЙЛ\033[0m", finish - start, file_size(file), 0);
+        fseek(file, 0, SEEK_SET);
+        print_results("\033[36m\nДОБАВЛЕНИЕ В ФАЙЛ\033[0m", finish - start, file_size(file), node_number - 1);
     }
  
     return exit_code;   

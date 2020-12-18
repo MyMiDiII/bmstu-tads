@@ -20,6 +20,8 @@ int read_int(int *const integer);
 
 int read_size(int *const size);
 
+int read_comp(int *const size);
+
 int read_answer(bool *const integer);
 
 int add_word(node_t **tree, node_t **balanced_tree,

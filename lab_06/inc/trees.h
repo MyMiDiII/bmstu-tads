@@ -24,7 +24,11 @@ int find_and_add(node_t *root, char *word);
 
 void print_tree(node_t *root, int place);
 
-int create_balanced_tree(node_t *tree, node_t **balanced_tree);
+//int create_balanced_tree(node_t *tree, node_t **balanced_tree);
+
+int create_balanced_tree(FILE *file, node_t **balanced_tree);
 
 int add_node_to_balansed_tree(node_t **tree, char *word);
+
+void free_tree(node_t *tree);
 #endif

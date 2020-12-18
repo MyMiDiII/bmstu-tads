@@ -28,4 +28,8 @@ void print_table(hash_table_t *table);
 
 int add_word_to_hash_table(hash_table_t *result, char *word);
 
+void free_table(hash_table_t *table);
+
+int restructuring(FILE *file, hash_table_t *table);
+
 #endif

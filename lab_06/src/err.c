@@ -18,6 +18,9 @@ void print_err(const int code)
         case (ERR_MEMORY):
             puts("\033[31mОшибка выделения памяти!\033[0m");
             break;
+        case (ERR_TOO_BIG_SIZE):
+            puts("\033[31mПревышен максимальный размер таблицы!\033[0m");
+            break;
         default:
             puts("\033[32m\nСпасибо за использование программы!\033[0m");
             puts("Автор: Маслова Марина");

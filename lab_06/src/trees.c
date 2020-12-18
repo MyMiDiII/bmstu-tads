@@ -12,6 +12,8 @@ extern int node_number;
 extern bool word_in;
 extern int comparisons;
 extern int balance_comparisons;
+extern int all_comp;
+extern int all_balance_comp;
 
 int create_binary_tree(FILE *file, node_t **result)
 {
@@ -22,10 +24,7 @@ int create_binary_tree(FILE *file, node_t **result)
         exit_code = add_node_to_bintree(result, word); 
 
     if (!feof(file))
-    {
-        //free_tree();
         return ERR_MEMORY;
-    }
 
     fseek(file, 0L, SEEK_SET);
     return OK;
@@ -45,7 +44,7 @@ void print_tree(node_t *root, int place)
         for (int i = add_space; i < place; i++)
             printf(" ");
 
-        printf("{ %d %s }\n", root->height, root->value);
+        printf("{ %s }\n", root->value);
 
         print_tree(root->left, place);
     }
@@ -88,12 +87,14 @@ int add_node_to_bintree(node_t **result, char *word)
     if (!*result)
     {
         exit_code = add_node(result, word);
+        word_in = false;
         node_number++;
         return exit_code;   
     }
 
     int compare_result = strcmp(word, (*result)->value);
     comparisons++;
+    all_comp++;
     
     if (compare_result < 0)
         exit_code = add_node_to_bintree(&(*result)->left, word);
@@ -186,18 +187,7 @@ void balance_tree(node_t **tree)
     *tree = balance_node(*tree);
     balance_tree(&(*tree)->left);
     balance_tree(&(*tree)->right);
-    //*tree = balance_node(*tree);
 } 
-
-int create_balanced_tree(node_t *tree, node_t **balanced_tree)
-{
-    int exit_code = OK;
-    exit_code = copy_tree(tree, balanced_tree);
-
-    balance_tree(balanced_tree);
-
-    return exit_code;
-}
 
 int add_node_to_balansed_tree(node_t **tree, char *word)
 {
@@ -211,6 +201,7 @@ int add_node_to_balansed_tree(node_t **tree, char *word)
 
     int compare_result = strcmp(word, (*tree)->value);
     balance_comparisons++;
+    all_balance_comp++;
     
     if (compare_result < 0)
         exit_code = add_node_to_balansed_tree(&(*tree)->left, word);
@@ -221,4 +212,30 @@ int add_node_to_balansed_tree(node_t **tree, char *word)
         balance_tree(tree);
 
     return exit_code;
+}
+
+int create_balanced_tree(FILE *file, node_t **balanced_tree)
+{
+    int exit_code = OK;
+    char *word;
+
+    while (!exit_code && !read_string(&word, file))
+        exit_code = add_node_to_balansed_tree(balanced_tree, word);
+
+    if (!feof(file))
+        return ERR_MEMORY;
+
+    fseek(file, 0L, SEEK_SET);
+    return OK;
+}
+
+void free_tree(node_t *tree)
+{
+    if (!tree)
+        return;
+
+    free_tree(tree->left);
+    free_tree(tree->right);
+    free(tree->value);
+    free(tree);
 }

@@ -11,6 +11,7 @@
 #define ERR_NONANSWER -6
 #define ERR_NONINTEGER -7
 #define ERR_NONSIZE -8
+#define ERR_TOO_BIG_SIZE -9
 
 #define RESET "\033[0m"
 #define RED "\033[31m"
